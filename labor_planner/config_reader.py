@@ -40,8 +40,15 @@ class ReadConfig:
 
         self.fiscal_year = self.check_fiscal_year(d['fiscal_year'])
 
+        # create data directory path where staff workbooks are stored
+        self.data_dir = self.check_directory(os.path.join(self.in_dir, "FY_{}".format(self.fiscal_year)))
+
         # get last two digits of the fiscal year as a string
         self.fy = str(self.fiscal_year)[-2:]
+
+        # get run design
+        # TODO: add check for design type from acceptable options
+        self.design = d['run_design']
 
     @staticmethod
     def check_file(f):
