@@ -9,10 +9,10 @@ tags:
 authors:
   - name: Chris R. Vernon
     orcid: 0000-0002-3406-6214
-    affiliation: 1 # (Multiple affiliations must be quoted)
+    affiliation: 1
   - name: David R. Geist
     orcid: 0000-0002-4969-730X
-    affiliation: 2
+    affiliation: 1
 affiliations:
  - name: Pacific Northwest National Laboratory, Richland, WA, USA
    index: 1
@@ -25,7 +25,7 @@ bibliography: paper.bib
 Labor planning, a.k.a. workforce planning, has an established importance
 in larger organizations due to the benefits of being prepared and aware of staff
 allocation gaps that limit productivity and hamper a healthy work-life
-balance [@Louch:2014]. @Sparkman:2018 presents two main elements of strategic
+balance [@Louch:2014]. @Blain:2019 presents two main elements of strategic
 workforce planning:  1) understanding the current distribution of employee
 skills and 2) trying to understand what will happen for staff in the future.
 A few more sentences here.
