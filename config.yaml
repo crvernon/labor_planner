@@ -1,0 +1,14 @@
+# Full path to the directory containing the staff Excel spreadsheets
+input_directory: "/Users/d3y010/projects/organizational/labor_planning"
+
+# Full path to the output directory
+output_directory: "/Users/d3y010/projects/organizational/labor_planning/outputs"
+
+# Full path with file name and extension to the staff list CSV file
+staff_csv: "/Users/d3y010/projects/organizational/labor_planning/admin/staff_list.csv"
+
+# Full path with file name and extension to the work hours CSV file
+work_hours_csv: "/Users/d3y010/projects/organizational/labor_planning/admin/work_hours.csv"
+
+# Fiscal year to process in format YYYY
+fiscal_year: 2018
