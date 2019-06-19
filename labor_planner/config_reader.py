@@ -127,12 +127,3 @@ class ReadConfig:
 
         else:
             raise TypeError("'fiscal_year' value is type {}. Must be integer in YYYY format with no quotes.".format(y))
-
-
-if __name__ == '__main__':
-
-    ini = '/Users/d3y010/repos/github/labor_planning/config.yaml'
-
-    c = ReadConfig()
-
-    print(c.fiscal_year)
