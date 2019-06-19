@@ -28,7 +28,8 @@ allocation gaps that limit productivity and hamper a healthy work-life
 balance [@Louch:2014]. @Blain:2019 presents two main elements of strategic
 workforce planning:  1) understanding the current distribution of employee
 skills and 2) trying to understand what will happen for staff in the future.
-A few more sentences here.
+Additionally, the organizational benefits of providing staff with opportunity
+conduct a healthy work-life balance are widely published (Examples...).
 
 We developed the `labor_planner` Python package to provide insight into whether
 staff are currently over- or under-committed and who, and which projects, are
