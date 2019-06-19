@@ -1,3 +1,10 @@
+"""workbook_utils.py
+
+Broadly used workbook utility functions.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
 
 
 def enable_formatting(in_workbook_instance):

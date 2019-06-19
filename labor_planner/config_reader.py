@@ -1,3 +1,12 @@
+"""config_reader.py
+
+Configuration reader for YAML.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
+
+
 import os
 import yaml
 

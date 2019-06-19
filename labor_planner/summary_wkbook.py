@@ -1,3 +1,11 @@
+"""summary_wkbook.py
+
+Build summary workbook with charts.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
+
 import operator
 import xlsxwriter
 

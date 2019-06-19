@@ -1,3 +1,11 @@
+"""overview_wkbook.py
+
+Build staff and project overview workbook.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
+
 import os
 import xlsxwriter
 

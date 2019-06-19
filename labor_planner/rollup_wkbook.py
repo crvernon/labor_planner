@@ -1,3 +1,11 @@
+"""rollup_wkbook.py
+
+Build rollup workbook for staff hours indicators of performance.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
+
 import xlsxwriter
 
 import labor_planner.workbook_utils as util

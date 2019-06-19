@@ -1,3 +1,12 @@
+"""project_wkbook.py
+
+Build project level workbook summary.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
+
+
 import xlsxwriter
 
 import labor_planner.workbook_utils as util

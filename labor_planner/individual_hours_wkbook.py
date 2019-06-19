@@ -1,3 +1,11 @@
+"""individual_hours_wkbook.py
+
+Build individual hours per staff workbook.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
+
 import xlsxwriter
 
 

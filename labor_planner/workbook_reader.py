@@ -1,3 +1,11 @@
+"""workbook_reader.py
+
+Read and format staff labor planning workbooks.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
+
 import os
 import collections
 

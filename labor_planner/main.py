@@ -1,5 +1,10 @@
+"""main.py
 
-import labor_planner.workbook_utils as util
+Execute labor planning code.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+
+"""
 
 from labor_planner.config_reader import ReadConfig
 from labor_planner.workbook_reader import ReadWorkbooks
@@ -41,6 +46,6 @@ class LaborPlanner:
 
 if __name__ == '__main__':
 
-    config_file = '/Users/d3y010/repos/github/labor_planner/config.yaml'
+    config_file = '/Users/d3y010/repos/github/labor_planner/example/config.yaml'
 
     LaborPlanner(config_file)
