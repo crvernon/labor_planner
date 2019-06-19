@@ -8,8 +8,4 @@ and summary charts from input staff planning spreadsheets.
 
 """
 
-import pkg_resources
-
-__version__ = pkg_resources.get_distribution('labor_planner').version
-
 __all__ = ['main']
