@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/192757129.svg)](https://zenodo.org/badge/latestdoi/192757129)
+
 # labor_planner
 Plan and visualize staff fiscal year labor allocation
 
