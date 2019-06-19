@@ -45,7 +45,6 @@ class ReadWorkbooks:
         self.projects_dict = {}
 
         # TODO:  Make this run parallel
-
         # Iterate through directory xlsx files
         for f in self.file_list:
 
@@ -174,6 +173,8 @@ class ReadWorkbooks:
                                 if fund_prob > 0.5:
                                     for ct, m_hr in enumerate(hrs_list):
                                         self.rollup_dict[nm][ct] = (self.rollup_dict[nm][ct] + m_hr)
+
+        self.sort_staff_dict()
 
     @staticmethod
     def check_int(hour_value):
