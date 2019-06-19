@@ -233,7 +233,7 @@ class ReadWorkbooks:
         with open(self.my_settings.in_staff_csv) as get:
             s = get.read()
 
-        return [i for i in s.split(';') if len(i) > 0]
+        return [i for i in s.strip().split(';') if len(i) > 0]
 
     def create_time_span_list(self):
         """Create a list of 12 values to iterate through for col position.
