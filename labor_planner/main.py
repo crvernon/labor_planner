@@ -5,6 +5,7 @@ Execute labor planning code.
 @author Chris R. Vernon (chris.vernon@pnnl.gov)
 
 """
+import argparse
 
 from labor_planner.config_reader import ReadConfig
 from labor_planner.workbook_reader import ReadWorkbooks
@@ -46,6 +47,8 @@ class LaborPlanner:
 
 if __name__ == '__main__':
 
-    config_file = '/Users/d3y010/repos/github/labor_planner/example/config.yaml'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('config_file', type=str, help='Full path with file name to YAML configuration file.')
+    args = parser.parse_args()
 
-    LaborPlanner(config_file)
+    LaborPlanner(args.config_file)
