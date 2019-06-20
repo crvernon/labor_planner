@@ -1,0 +1,13 @@
+month,start_mon,start_day,end_mon,end_day,work_hrs
+Jan,Dec,27,Jan,23,176
+Feb,Jan,24,Feb,20,160
+Mar,Feb,21,Mar,27,160
+Apr,Mar,28,Apr,24,160
+May,Apr,25,May,22,192
+Jun,May,23,Jun,26,160
+Jul,Jun,27,Jul,24,154
+Aug,Jul,25,Aug,21,200
+Sep,Aug,22,Sep,30,200
+Oct,Oct,1,Oct,23,160
+Nov,Oct,24,Nov,20,144
+Dec,Nov,21,Dec,25,160
