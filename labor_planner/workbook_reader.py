@@ -95,92 +95,84 @@ class ReadWorkbooks:
                     # instantiate a worksheet
                     s = wkbook.sheet_by_name(wksheets[i])
 
-                    # make all sheets active
-                    sheet_sum_cell = 1
+                    # get all values in the column A
+                    get_names = s.col_values(0)
 
-                    # if total hours is 0 then pass the sheet
-                    if sheet_sum_cell == 0:
-                        pass
+                    # iterate through names in worksheet
+                    for nm in get_names:
 
-                    else:
-                        # get all values in the column A
-                        get_names = s.col_values(0)
+                        # if the name is not in the staff list, pass it
+                        if nm in self.staff_list:
 
-                        # iterate through names in worksheet
-                        for nm in get_names:
+                            # add name to dict for monthly hour sum with placeholders
+                            if nm not in self.rollup_dict:
+                                self.rollup_dict[nm] = [0]*12
 
-                            # if the name is not in the staff list, pass it
-                            if nm in self.staff_list:
+                            # get project number, proposal number, or work package number
+                            prj_num = s.cell_value(rowx=2,colx=1)
+                            prop_num = s.cell_value(rowx=2,colx=5)
+                            wp_num = s.cell_value(rowx=2,colx=9)
+                            mng_name = s.cell_value(rowx=8,colx=1)
 
-                                # add name to dict for monthly hour sum with placeholders
-                                if nm not in self.rollup_dict:
-                                    self.rollup_dict[nm] = [0]*12
+                            # get project title - make no title if none listed
+                            title = s.cell_value(rowx=3,colx=1)
+                            if len(title) == 0:
+                                title = 'No Title Listed'
 
-                                # get project number, proposal number, or work package number
-                                prj_num = s.cell_value(rowx=2,colx=1)
-                                prop_num = s.cell_value(rowx=2,colx=5)
-                                wp_num = s.cell_value(rowx=2,colx=9)
-                                mng_name = s.cell_value(rowx=8,colx=1)
+                            # convert funding probability to decimal
+                            fund_prob = self.set_probability(s.cell_value(rowx=7, colx=1))
 
-                                # get project title - make no title if none listed
-                                title = s.cell_value(rowx=3,colx=1)
-                                if len(title) == 0:
-                                    title = 'No Title Listed'
+                            # determine which project identifier to report
+                            prj_id = self.get_prj_id(prj_num, prop_num, wp_num, nm, index)
 
-                                # convert funding probability to decimal
-                                fund_prob = self.set_probability(s.cell_value(rowx=7, colx=1))
+                            # get project title from worksheet
+                            if len(s.cell_value(3, 1)) == 0:
+                                prj_title = 'none'
+                            else:
+                                prj_title = s.cell_value(3, 1)
 
-                                # determine which project identifier to report
-                                prj_id = self.get_prj_id(prj_num, prop_num, wp_num, nm, index)
+                            # add project id and title to dictionary
+                            if prj_id not in self.prj_title_dict:
+                                self.prj_title_dict[prj_id] = prj_title
 
-                                # get project title from worksheet
-                                if len(s.cell_value(3, 1)) == 0:
-                                    prj_title = 'none'
+                            # get position of name in list by index
+                            name_idx = get_names.index(nm)
+
+                            # iterate through the hours estimate for each month
+                            hrs_list = []
+                            for m in self.month_list:
+                                hrs = s.cell_value(rowx=name_idx,colx=m)
+
+                                # only capture numeric values for hours, else 0
+                                hr = self.check_int(hrs)
+
+                                # create list of formatted hours for all probs
+                                hrs_list.append(hr)
+
+                                # add numeric hour values to a yearly hour list
+                                self.staff_dict.setdefault(nm, []).append(hr)
+
+                                # add project funding probability to dictionary
+                                self.prj_prob_dict.setdefault(prj_id, []).append(fund_prob)
+
+                                # differentiate between low and high funding probability
+                                if fund_prob <= 0.5:
+                                    self.staff_low_prob_dict.setdefault(nm, []).append(hr)
                                 else:
-                                    prj_title = s.cell_value(3, 1)
+                                    self.staff_high_prob_dict.setdefault(nm, []).append(hr)
 
-                                # add project id and title to dictionary
-                                if prj_id not in self.prj_title_dict:
-                                    self.prj_title_dict[prj_id] = prj_title
+                            # if hrs sum != 0 then add to project code to dict
+                            if sum(hrs_list) != 0:
+                                if nm not in self.ind_dict:
+                                    self.ind_dict[nm] = [[prj_id, mng_name, hrs_list, title, fund_prob]]
+                                else:
+                                    self.ind_dict[nm].append([prj_id, mng_name, hrs_list, title, fund_prob])
 
-                                # get position of name in list by index
-                                name_idx = get_names.index(nm)
-
-                                # iterate through the hours estimate for each month
-                                hrs_list = []
-                                for m in self.month_list:
-                                    hrs = s.cell_value(rowx=name_idx,colx=m)
-
-                                    # only capture numeric values for hours, else 0
-                                    hr = self.check_int(hrs)
-
-                                    # create list of formatted hours for all probs
-                                    hrs_list.append(hr)
-
-                                    # add numeric hour values to a yearly hour list
-                                    self.staff_dict.setdefault(nm, []).append(hr)
-
-                                    # add project funding probability to dictionary
-                                    self.prj_prob_dict.setdefault(prj_id, []).append(fund_prob)
-
-                                    # differentiate between low and high funding probability
-                                    if fund_prob <= 0.5:
-                                        self.staff_low_prob_dict.setdefault(nm, []).append(hr)
-                                    else:
-                                        self.staff_high_prob_dict.setdefault(nm, []).append(hr)
-
-                                # if hrs sum != 0 then add to project code to dict
-                                if sum(hrs_list) != 0:
-                                    if nm not in self.ind_dict:
-                                        self.ind_dict[nm] = [[prj_id, mng_name, hrs_list, title, fund_prob]]
-                                    else:
-                                        self.ind_dict[nm].append([prj_id, mng_name, hrs_list, title, fund_prob])
-
-                                # sum hours for each month per staff name for rollup workbook
-                                #  project hours must be high prob of funding
-                                if fund_prob > 0.5:
-                                    for ct, m_hr in enumerate(hrs_list):
-                                        self.rollup_dict[nm][ct] = (self.rollup_dict[nm][ct] + m_hr)
+                            # sum hours for each month per staff name for rollup workbook
+                            #  project hours must be high prob of funding
+                            if fund_prob > 0.5:
+                                for ct, m_hr in enumerate(hrs_list):
+                                    self.rollup_dict[nm][ct] = (self.rollup_dict[nm][ct] + m_hr)
 
         self.sort_staff_dict()
 
