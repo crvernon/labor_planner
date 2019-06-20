@@ -31,7 +31,7 @@ class ReadConfig:
     # expected keys in the YAML configuration file
     YAML_KEYS = ('input_directory', 'output_directory', 'staff_csv', 'work_hours_csv', 'fiscal_year')
 
-    def __init__(self, config_file='/Users/d3y010/repos/github/labor_planning/config.yaml'):
+    def __init__(self, config_file):
 
         d = self.read_yaml(config_file)
 
@@ -56,7 +56,6 @@ class ReadConfig:
         self.fy = str(self.fiscal_year)[-2:]
 
         # get run design
-        # TODO: add check for design type from acceptable options
         self.design = d['run_design']
 
     @staticmethod
