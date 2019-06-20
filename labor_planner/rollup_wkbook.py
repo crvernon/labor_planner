@@ -177,10 +177,10 @@ class Rollup:
 
             # set staff hours list based on design
             if self.config_obj.design == 'quarter_3_4':
-                staff_hours_list = self.read_obj.ollup_dict[staff][:6]
+                staff_hours_list = self.read_obj.rollup_dict[staff][:6]
 
             elif self.config_obj.design == 'quarter_2_3':
-                staff_hours_list = self.read_obj.ollup_dict[staff][:6]
+                staff_hours_list = self.read_obj.rollup_dict[staff][:6]
 
             elif self.config_obj.design == 'quarter_2_3_4':
                 staff_hours_list = self.read_obj.rollup_dict[staff][:9]

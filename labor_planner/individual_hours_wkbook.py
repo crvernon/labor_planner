@@ -75,7 +75,7 @@ class IndividualHours:
 
             elif self.config_obj.design == 'quarter_2_3':
                 row_13_l = self.read_obj.month_header_with_total[:6]
-                row_13_l.append(self.data.month_header_with_total[-1])
+                row_13_l.append(self.read_obj.month_header_with_total[-1])
                 row_14_l = self.read_obj.work_hours_row[:6]
                 row_14_l.append(sum(row_14_l))
                 row_15_l = self.read_obj.total_month_range_row[:6]
