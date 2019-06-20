@@ -24,7 +24,7 @@ bibliography: paper.bib
 
 Labor planning, a.k.a. workforce planning, has an established importance
 in larger organizations due to the benefits of being prepared and aware of staff
-allocation gaps that may limit productivity [@Louch, @de2015workforce, @schweyer2010talent, @pynes2004implementation].  Additionally, the organizational benefits of providing staff with a healthy work-life balance are widely published [@virtanen2011long, @virtanen2009long, @sparks1997effects].  Labor planning is now one of the most difficult problems managers have to address [@de2015workforce].  @pynes2004implementation states that for workforce planning to succeed, human resources personnel and managers must become strategic partners to develop new skills and competencies.  In this paper, we present one such development to ameliorate the burden of labor planning on managers and human resources personnel alike to provide
+allocation gaps that may limit productivity [@Louch; @de2015workforce; @schweyer2010talent; @pynes2004implementation].  Additionally, the organizational benefits of providing staff with a healthy work-life balance are widely published [@virtanen2011long; @virtanen2009long; @sparks1997effects].  Labor planning is now one of the most difficult problems managers have to address [@de2015workforce].  @pynes2004implementation states that for workforce planning to succeed, human resources personnel and managers must become strategic partners to develop new skills and competencies.  In this paper, we present one such development to ameliorate the burden of labor planning on managers and human resources personnel alike to provide
 organizational workforce stability.
 
 We developed the `labor_planner` Python package to provide insight into whether
