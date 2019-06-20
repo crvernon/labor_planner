@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/192757129.svg)](https://zenodo.org/badge/latestdoi/192757129)[![Build Status](https://travis-ci.org/crvernon/labor_planner.svg?branch=master)](https://travis-ci.org/crvernon/labor_planner)
+[![DOI](https://zenodo.org/badge/192757129.svg)](https://zenodo.org/badge/latestdoi/192757129)  [![Build Status](https://travis-ci.org/crvernon/labor_planner.svg?branch=master)](https://travis-ci.org/crvernon/labor_planner)
 
 # labor_planner
 Plan and visualize staff fiscal year labor allocation
