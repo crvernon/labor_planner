@@ -41,11 +41,11 @@ class ReadConfig:
         self.in_work_hours = self.check_file(d['work_hours_csv'])
 
         # output files
-        self.out_overview_file = "{0}/overview_chart.xlsx".format(self.out_dir)
-        self.out_individ_file = "{0}/individual_staff_summary.xlsx".format(self.out_dir)
-        self.out_rollup_file = "{0}/rollup.xlsx".format(self.out_dir)
-        self.out_project_file = "{0}/projects.xlsx".format(self.out_dir)
-        self.out_summary_file = "{0}/summary.xlsx".format(self.out_dir)
+        self.out_overview_file = os.path.join(self.out_dir, "overview_chart.xlsx")
+        self.out_individ_file = os.path.join(self.out_dir, "individual_staff_summary.xlsx")
+        self.out_rollup_file = os.path.join(self.out_dir, "rollup.xlsx")
+        self.out_project_file = os.path.join(self.out_dir, "projects.xlsx")
+        self.out_summary_file = os.path.join(self.out_dir, "summary.xlsx")
 
         self.fiscal_year = self.check_fiscal_year(d['fiscal_year'])
 
