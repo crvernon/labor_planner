@@ -7,5 +7,6 @@ and summary charts from input staff planning spreadsheets.
 @author Chris R. Vernon (chris.vernon@pnnl.gov)
 
 """
+from labor_planner.main import *
 
 __all__ = ['main']
