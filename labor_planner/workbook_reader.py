@@ -187,18 +187,22 @@ class ReadWorkbooks:
 
     @staticmethod
     def set_probability(p):
-        """Set a probability between 0 and 1
+        """Set a probability between 0 and 1.
+
+        :param p:                       Probability value from user.
+
+        :return:                        Decimal probability from 0.0 to 1.
 
         """
         # convert funding probability to decimal
         if type(p) in (None, str):
-            p = 100
+            p = 100.0
 
         # account for fractional entries
         elif p <= 1:
-            p = p * 100
+            p *= 100.0
 
-        return round(p / 100, 2)
+        return round(p / 100.0, 2)
 
     def get_work_hour_rows(self):
         """Read work hours file and generate the work hours and total month range rows.
