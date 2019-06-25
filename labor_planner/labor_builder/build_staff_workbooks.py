@@ -1,7 +1,6 @@
 import os
 import collections
 import operator
-import sys
 import xlrd
 import xlsxwriter
 
