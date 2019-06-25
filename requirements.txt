@@ -3,3 +3,4 @@ xlrd>=1.1.0
 pandas>=0.19
 xlsxwriter>=1.1.4
 setuptools>=24.2.0
+pyyaml>=3.12
