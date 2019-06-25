@@ -10,11 +10,11 @@ import argparse
 from labor_planner.config_reader import ReadConfig
 from labor_planner.workbook_reader import ReadWorkbooks
 from labor_planner.stage_data import Stage
-from labor_planner.overview_wkbook import Overview
-from labor_planner.project_wkbook import Projects
-from labor_planner.individual_hours_wkbook import IndividualHours
-from labor_planner.rollup_wkbook import Rollup
-from labor_planner.summary_wkbook import Summary
+from labor_planner.labor_outputs.overview import Overview
+from labor_planner.labor_outputs.project_level import Projects
+from labor_planner.labor_outputs.individual_staff import IndividualHours
+from labor_planner.labor_outputs.rollup_staff import Rollup
+from labor_planner.labor_outputs.summary import Summary
 
 
 class LaborPlanner:
