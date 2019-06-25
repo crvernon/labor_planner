@@ -1,4 +1,4 @@
-"""rollup_wkbook.py
+"""rollup_staff.py
 
 Build rollup workbook for staff hours indicators of performance.
 

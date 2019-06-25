@@ -1,4 +1,4 @@
-"""overview_wkbook.py
+"""overview.py
 
 Build staff and project overview workbook.
 

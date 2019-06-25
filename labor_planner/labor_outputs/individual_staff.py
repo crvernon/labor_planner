@@ -1,4 +1,4 @@
-"""individual_hours_wkbook.py
+"""individual_staff.py
 
 Build individual hours per staff workbook.
 
