@@ -322,8 +322,7 @@ class BuildStaffWorkbooks:
                      '']
         ws.write_row('A15', span_list, fmt[6])
 
-    @staticmethod
-    def get_staff_with_hours(sdict, value, staff_list, wkg_hrs_list):
+    def get_staff_with_hours(self, sdict, value, staff_list, wkg_hrs_list):
 
         # for each staff member in group
         for sn in staff_list:
@@ -337,7 +336,7 @@ class BuildStaffWorkbooks:
                 # if staff member is on this project
                 if sn == staff_name:
                     # calculate hours per month per staff
-                    act_wkg_hrs = percent_to_hours(wkg_hrs_list, fte)
+                    act_wkg_hrs = self.percent_to_hours(wkg_hrs_list, fte)
                     # total project hours for staff member
                     act_hrs_total = sum(act_wkg_hrs)
                     # total percent that staff member hours will be of FY
