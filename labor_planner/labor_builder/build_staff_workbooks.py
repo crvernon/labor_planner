@@ -92,6 +92,7 @@ class BuildStaffWorkbooks:
 
     @staticmethod
     def get_pm_names(in_dict):
+        """Generate a sorted list of project manager names."""
 
         pm_list = []
         for k in in_dict.keys():
@@ -305,6 +306,7 @@ class BuildStaffWorkbooks:
         ws.write_row('B14', wkg_hrs_list, fmt[6])
         ws.write('N14', total_hours, fmt[6])
 
+        # TODO get dates from work_hours.csv
         span_list = ['Processing Month =',
                      'Dec 27-Jan 23',
                      'Jan 24-Feb 20',
@@ -322,7 +324,9 @@ class BuildStaffWorkbooks:
                      '']
         ws.write_row('A15', span_list, fmt[6])
 
-    def get_staff_with_hours(self, sdict, value, staff_list, wkg_hrs_list):
+    def get_staff_with_hours(self, value, staff_list, wkg_hrs_list):
+
+        sdict = {}
 
         # for each staff member in group
         for sn in staff_list:
@@ -337,28 +341,36 @@ class BuildStaffWorkbooks:
                 if sn == staff_name:
                     # calculate hours per month per staff
                     act_wkg_hrs = self.percent_to_hours(wkg_hrs_list, fte)
+
                     # total project hours for staff member
                     act_hrs_total = sum(act_wkg_hrs)
+
                     # total percent that staff member hours will be of FY
                     tot_hrs_percent = (act_hrs_total / sum(wkg_hrs_list))
+
                     # add val to dict
                     sdict[sn] = [act_wkg_hrs, act_hrs_total, tot_hrs_percent]
+
+        return sdict
 
     @staticmethod
     def get_staff_without_hours(sdict, staff_list, wkg_hrs_list):
 
         for sn in staff_list:
+
             if sn in sdict:
                 pass
+
             else:
                 act_wkg_hrs = [''] * len(wkg_hrs_list)
                 sdict[sn] = [act_wkg_hrs, '', '']
 
+        return sdict
+
     @staticmethod
     def write_staff_rows(ordered_sdict, start_row, ws, fmt):
 
-        index = 0
-        for k in ordered_sdict.keys():
+        for index, k in enumerate(ordered_sdict.keys()):
 
             v = ordered_sdict[k]
 
@@ -379,17 +391,14 @@ class BuildStaffWorkbooks:
             # write info
             ws.write('A{0}'.format(row), k, f)
             ws.write_row('B{0}'.format(row), act_wkg_hrs, f)
-            #            ws.write('N{0}'.format(row), act_hrs_total, f)
+
             sum_range = 'B{0}:M{0}'.format(row)
             tot_form = '{=SUM(' + sum_range + ')}'
             tot_cell = 'N{0}'.format(row)
             ws.write_formula(tot_cell, tot_form, f)
-            #            ws.write('O{0}'.format(row), tot_hrs_percent, fp)
+
             per_form = '{=' + tot_cell + '/ (N14)}'
             ws.write_formula('O{0}'.format(row), per_form, fp)
-
-            # advance row
-            index += 1
 
         # return final staff row number + 1
         return row + 1
@@ -403,26 +412,28 @@ class BuildStaffWorkbooks:
 
         # from B to N
         for i in range(1, 14, 1):
+
             col = alpha_str[i]
             target_cell = '{0}{1}'.format(col, totals_row)
             end_row = totals_row - 1
             sum_range = '{0}{1}:{0}{2}'.format(col, start_row, end_row)
             formula = '{=SUM(' + sum_range + ')}'
             ws.write_formula(target_cell, formula, f)
+
         ws.write('O{0}'.format(totals_row), '', f)
 
     def populate_staff_info(self, ws, staff_list, key, value, wkg_hrs_list, fmt):
+
         # start row
         start_row = 16
 
-        # locals
         sdict = {}
 
         # add data to dict where staff have hours on project
-        self.get_staff_with_hours(sdict, value, staff_list, wkg_hrs_list)
+        sdict_whrs = self.get_staff_with_hours(value, staff_list, wkg_hrs_list)
 
         # add data to dict where staff do not have hours on the project
-        self.get_staff_without_hours(sdict, staff_list, wkg_hrs_list)
+        sdict = self.get_staff_without_hours(sdict_whrs, staff_list, wkg_hrs_list)
 
         # order dictionary
         ordered_sdict = collections.OrderedDict(sorted(sdict.items()))
@@ -525,11 +536,12 @@ class BuildStaffWorkbooks:
         self.create_out_staff_file(staff_list, self.out_staff_file)
 
         for index, pm_name in enumerate(staff_list):
+
             # format staff name to be file name
             file_name = self.format_file_name(pm_name.lower())
 
             # set out_file name
-            wb_file = "{0}/{1}.xlsx".format(self.out_sheets_dir, file_name)
+            wb_file = os.path.join(self.out_sheets_dir, "{0}.xlsx".format(file_name))
 
             # create Excel workbook for staff member
             wbook = xlsxwriter.Workbook(wb_file)
@@ -551,4 +563,4 @@ if __name__ == '__main__':
 
     in_dir = "/users/d3y010/projects/organizational/labor_planning/dale"
 
-    BuildStaffWorkbooks(in_dir)
+    BuildStaffWorkbooks(in_dir).build()
