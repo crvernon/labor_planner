@@ -8,6 +8,7 @@ Execute labor planning code.
 import argparse
 
 from labor_planner.config_reader import ReadConfig
+from labor_planner.labor_builder.build_staff_workbooks import BuildStaffWorkbooks
 from labor_planner.workbook_reader import ReadWorkbooks
 from labor_planner.stage_data import Stage
 from labor_planner.labor_outputs.overview import Overview
@@ -23,26 +24,32 @@ class LaborPlanner:
 
         self.config_obj = ReadConfig(config)
 
-        # get information from staff workbooks
-        self.read_obj = ReadWorkbooks(self.config_obj)
+        if self.config_obj.build:
 
-        # stage data for labor analysis
-        self.data = Stage(self.config_obj, self.read_obj)
+            BuildStaffWorkbooks(self.config_obj)
 
-        # build overview workbook
-        Overview(self.config_obj, self.data)
+        if self.config_obj.plan:
 
-        # build projects workbook
-        Projects(self.config_obj, self.read_obj, self.data)
+            # get information from staff workbooks
+            self.read_obj = ReadWorkbooks(self.config_obj)
 
-        # build individual hours workbook
-        IndividualHours(self.config_obj, self.read_obj, self.data)
+            # stage data for labor analysis
+            self.data = Stage(self.config_obj, self.read_obj)
 
-        # build rollup workbook
-        Rollup(self.config_obj, self.read_obj, self.data)
+            # build overview workbook
+            Overview(self.config_obj, self.data)
 
-        # build summary workbook
-        Summary(self.config_obj, self.read_obj, self.data)
+            # build projects workbook
+            Projects(self.config_obj, self.read_obj, self.data)
+
+            # build individual hours workbook
+            IndividualHours(self.config_obj, self.read_obj, self.data)
+
+            # build rollup workbook
+            Rollup(self.config_obj, self.read_obj, self.data)
+
+            # build summary workbook
+            Summary(self.config_obj, self.read_obj, self.data)
 
 
 if __name__ == '__main__':
