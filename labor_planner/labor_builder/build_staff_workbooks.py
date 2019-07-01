@@ -11,7 +11,7 @@ class BuildStaffWorkbooks:
     """Build staff workbook templates.  Each workbook will be used by the named staff member to forecast their,
      and those whom they manage, work hours for the calendar year.
 
-     :param config_file:                Full path with file name and extension to the input configuration file.
+     :param config_obj:                YAML configuration object
 
     """
 
