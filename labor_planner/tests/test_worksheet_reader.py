@@ -9,7 +9,7 @@ class TestWorksheetReader(unittest.TestCase):
     """Test configuration integrity."""
 
     TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
-    TEST_CONFIG_FILE = os.path.join(TEST_DATA_DIR, 'config.yaml')
+    TEST_CONFIG_FILE = os.path.join(TEST_DATA_DIR, 'config_plan.yml')
     TEST_CONFIG_OBJ = ReadConfig(TEST_CONFIG_FILE)
     TEST_READ_OBJ = ReadWorkbooks(TEST_CONFIG_OBJ)
 
