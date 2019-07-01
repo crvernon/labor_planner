@@ -1,35 +1,51 @@
 import os
 import collections
-import operator
+
+import numpy as np
+import pandas as pd
 import xlrd
 import xlsxwriter
 
 
 class BuildStaffWorkbooks:
+    """Build staff workbook templates.  Each workbook will be used by the named staff member to forecast their,
+     and those whom they manage, work hours for the calendar year.
 
-    def __init__(self, in_dir):
+     :param config_file:                Full path with file name and extension to the input configuration file.
 
-        self.in_file = "{0}/ecology_staffing.xlsx".format(in_dir)
-        self.target_fy = 'FY18'
-        self.out_sheets_dir = "{0}/FY_20{1}".format(in_dir, self.target_fy[-2:])
-        self.admin_dir = "{0}/admin".format(in_dir)
-        self.out_staff_file = "{0}/staff_list.csv".format(self.admin_dir)
+    """
 
-        self.wkg_hrs_list = [152, 160, 200, 160, 160, 192, 152, 200, 192, 136, 120, 136]
-        self.num_blank_wksheets = 10
+    def __init__(self, config_obj):
 
-    @staticmethod
-    def make_dirs(dir_list):
-        """Create a directory if it does not exist for each in list
+        self.staffing_file = config_obj.in_staff_csv
+        self.target_fy = config_obj.fy
+        self.out_staff_sheets_dir = config_obj.data_dir
+        self.num_blank_wksheets = config_obj.num_blank_wksheets
+        self.working_hours_file = config_obj.in_work_hours
+        self.wkg_hrs_list, self.mth_list, self.mth_span_list = self.read_wkg_hrs()
 
-        :param dir_list:
+        # build workbooks
+        self.build()
+
+    def read_wkg_hrs(self):
+        """Process working hours file and format data as needed.
+
+        :return:            [0] list of working hours
+                            [1] list of months
+                            [2] list of month span strings
 
         """
+        df = pd.read_csv(self.working_hours_file)
 
-        for i in dir_list:
+        df['span'] = df['start_mon'] + ' ' + df['start_day'].astype(str) + '-' + df['end_mon'] + ' ' + df['end_day'].astype(str)
 
-            if not os.path.exists(i):
-                os.makedirs(i)
+        wkg_hrs_list = df['work_hrs'].tolist()
+
+        mth_list = df['month'].tolist()
+
+        mth_span_list = df['span'].tolist()
+
+        return wkg_hrs_list, mth_list, mth_span_list
 
     @staticmethod
     def open_xlsx(in_file):
@@ -50,153 +66,28 @@ class BuildStaffWorkbooks:
             raise msg
 
     @staticmethod
-    def create_staff_dict(value, s_dict={}):
+    def format_file_name(s):
+        """Format the input string to accomodate the desired file name output.
 
-        # iterate through each project component
-        for v in value:
+        :param s:                       Input string
 
-            # unpack values
-            sn, fy, fte, prob = v
+        :return:                        Formatted string
 
-            # create staff dict key
-            k = '{0}|{1}|{2}'.format(sn, fy, prob)
+        """
 
-            # add staff info to dict; if in, create sum FTE
-            if k in s_dict:
+        sr = s.replace(',', '_').replace(' ', '_').replace(')', '_').replace('(', '_')
 
-                # get previous FTE
-                prev_fte = s_dict[k]
-
-                # sum to get new FTE
-                new_fte = (prev_fte + fte)
-
-                # replace old FTE with new FTE
-                s_dict[k] = new_fte
-
-            else:
-                s_dict[k] = fte
-
-        return s_dict
-
-    @staticmethod
-    def staff_dict_to_list(d, out_list=[]):
-
-        for k in d.keys():
-
-            v = d[k]
-
-            sn, fy, prob = k.split('|')
-            out_list.append([sn, fy, v, prob])
-
-        return out_list
-
-    @staticmethod
-    def get_pm_names(in_dict):
-        """Generate a sorted list of project manager names."""
-
-        pm_list = []
-        for k in in_dict.keys():
-
-            pm = k.split('|')[0]
-            pm_list.append(pm)
-
-        # sort list and make unique
-        return sorted(list(set(pm_list)))
-
-    @staticmethod
-    def get_staff_names(in_dict):
-
-        staff_list = []
-        for k in in_dict.keys():
-
-            v = in_dict[k]
-
-            for i in v:
-                sn = i[0]
-                staff_list.append(sn)
-
-        # sort list and make unique
-        return sorted(list(set(staff_list)))
-
-    @staticmethod
-    def combine_list_unique(list_1, list_2):
-
-        return sorted(list(set(list_1 + list_2)))
-
-    @staticmethod
-    def format_file_name(string):
-
-        sr = string.replace(',', '_').replace(' ', '_').replace(')', '_').replace('(', '_')
-
-        return sr.replace('___', '_').replace('__', '_')
-
-    def process_input_data(self, in_file, target_fy):
-
-        # set blank dicts
-        temp_dict = {}
-        final_dict = {}
-
-        # open workbook
-        wkbook = self.open_xlsx(in_file)
-
-        # get staffing worksheet
-        s = wkbook.sheet_by_name('Sheet1')
-
-        # get column values starting at row 1
-        id_col = s.col_values(0)[1:]
-        title_col = s.col_values(1)[1:]
-        #    desc_col = s.col_values(3)[1:]
-        pm_col = s.col_values(5)[1:]
-        #    fy_col = s.col_values(7)[1:]
-        staff_col = s.col_values(4)[1:]
-        fte_col = s.col_values(2)[1:]
-        adj_fte_col = s.col_values(3)[1:]
-
-        # calculate funding probability by dividing fte/adj_fte
-        funding_prob_col = map(operator.truediv, adj_fte_col, fte_col)
-
-        # combine lists
-        out_list = zip(id_col, title_col, pm_col, staff_col, adj_fte_col, funding_prob_col)
-
-        # create dictionary from list
-        for i in out_list:
-            # unpack values
-            proj_id, title, pm, staff_name, fte, prob = i
-
-            # get records for target FY
-            fy = target_fy
-
-            # create unique key
-            key = '{0}|{1}|{2}'.format(pm, proj_id, title)
-            val = [staff_name, fy, fte, prob]
-
-            # add to dict
-            if key in temp_dict:
-                temp_dict[key].append(val)
-
-            else:
-                temp_dict[key] = [val]
-
-        # process project dict to get correct FTE for each staff
-        for key in temp_dict.keys():
-
-            value = temp_dict[key]
-
-            staff_dict = {}
-            rep_list = []
-            # create staff name dict
-            self.create_staff_dict(value, staff_dict)
-
-            # create list from staff dict
-            self.staff_dict_to_list(staff_dict, rep_list)
-
-            # replace current entry in project dict with new values
-            final_dict[key] = rep_list
-
-        return final_dict
+        return sr.replace('___', '_').replace('__', '_').lower()
 
     @staticmethod
     def set_formatting(wkbook):
+        """Set workbook formatting for cells.
+
+        :param wkbook:                  Workbook object
+
+        :return:                        Options for formatting
+
+        """
 
         # formatting options
         bold = wkbook.add_format({'bold': 1})
@@ -217,16 +108,15 @@ class BuildStaffWorkbooks:
                border_gray_center, red_text_wrap, bold_center_border, num_percent, \
                bkg_blue, border_1, num_percent_blue
 
-    @staticmethod
-    def percent_to_hours(wkg_hours_list, staff_percent_yr):
+    def write_static_worksheet_content(self, ws, fmt, fy, wkg_hrs_list):
+        """Write static (non-staff row) worksheet content
 
-        total_hours = float(sum(wkg_hours_list))
-        act_staff_hrs = staff_percent_yr * total_hours
+        :param ws:                      Worksheet object
+        :param fmt:                     Formatting object
+        :param fy:                      Two-digit fiscal year
+        :param wkg_hrs_list:            List of working hours per month
 
-        return [round((i / total_hours) * act_staff_hrs) for i in wkg_hours_list]
-
-    @staticmethod
-    def write_static_worksheet_content(ws, fmt, fy, wkg_hrs_list):
+        """
 
         # set column widths
         ws.set_column('A:A', 22)
@@ -277,27 +167,17 @@ class BuildStaffWorkbooks:
         ws.write('A12', 'Group Staff', fmt[3])
         current_fy = int(fy[-2:])
         next_fy = 'FY{0}'.format(current_fy + 1)
+
         ws.merge_range('B12:D12', 'Quarter 2 - {0}'.format(fy), fmt[8])
         ws.merge_range('E12:G12', 'Quarter 3 - {0}'.format(fy), fmt[8])
         ws.merge_range('H12:J12', 'Quarter 4 - {0}'.format(fy), fmt[8])
         ws.merge_range('K12:M12', 'Quarter 1 - {0}'.format(next_fy), fmt[8])
+
         ws.write('N12', '', fmt[8])
         ws.write('O12', '', fmt[8])
 
-        mth_list = ['',
-                    'Jan-{0}'.format(current_fy),
-                    'Feb-{0}'.format(current_fy),
-                    'Mar-{0}'.format(current_fy),
-                    'Apr-{0}'.format(current_fy),
-                    'May-{0}'.format(current_fy),
-                    'Jun-{0}'.format(current_fy),
-                    'Jul-{0}'.format(current_fy),
-                    'Aug-{0}'.format(current_fy),
-                    'Sep-{0}'.format(current_fy),
-                    'Oct-{0}'.format(current_fy),
-                    'Nov-{0}'.format(current_fy),
-                    'Dec-{0}'.format(current_fy),
-                    'Total']
+        mth_list = [''] + ['{}-{}'.format(i, self.target_fy) for i in self.mth_list] + ['Total']
+
         ws.write_row('A13', mth_list, fmt[6])
         ws.merge_range('O13:O14', '% of Available Hours Covered', fmt[6])
 
@@ -306,73 +186,44 @@ class BuildStaffWorkbooks:
         ws.write_row('B14', wkg_hrs_list, fmt[6])
         ws.write('N14', total_hours, fmt[6])
 
-        # TODO get dates from work_hours.csv
-        span_list = ['Processing Month =',
-                     'Dec 27-Jan 23',
-                     'Jan 24-Feb 20',
-                     'Feb 21-Mar 27',
-                     'Mar 28-Apr 24',
-                     'Apr 25-May 22',
-                     'May 23-Jun 26',
-                     'Jun 27-Jul 24',
-                     'Jul 25-Aug 21',
-                     'Aug 22-Sept 30',
-                     'Oct 1-Oct 23',
-                     'Oct 24-Nov 20',
-                     'Nov 21-Dec 25',
-                     '',
-                     '']
+        span_list = ['Processing Month ='] + self.mth_span_list + ['', '']
+
         ws.write_row('A15', span_list, fmt[6])
 
-    def get_staff_with_hours(self, value, staff_list, wkg_hrs_list):
-
-        sdict = {}
-
-        # for each staff member in group
-        for sn in staff_list:
-
-            # for each staff member on project
-            for v in value:
-
-                # unpack values
-                staff_name, fy, fte, prob = v
-
-                # if staff member is on this project
-                if sn == staff_name:
-                    # calculate hours per month per staff
-                    act_wkg_hrs = self.percent_to_hours(wkg_hrs_list, fte)
-
-                    # total project hours for staff member
-                    act_hrs_total = sum(act_wkg_hrs)
-
-                    # total percent that staff member hours will be of FY
-                    tot_hrs_percent = (act_hrs_total / sum(wkg_hrs_list))
-
-                    # add val to dict
-                    sdict[sn] = [act_wkg_hrs, act_hrs_total, tot_hrs_percent]
-
-        return sdict
-
     @staticmethod
-    def get_staff_without_hours(sdict, staff_list, wkg_hrs_list):
+    def create_staff_row_content(staff_list, wkg_hrs_list):
+        """Create content to populate staff rows for each worksheet.
+
+        :param staff_list:              List of all staff
+        :param wkg_hrs_list:            List of working hours for each month
+
+        :return:                        Dictionary of blank content for each staff member
+
+        """
+
+        d = {}
 
         for sn in staff_list:
 
-            if sn in sdict:
-                pass
+            act_wkg_hrs = [''] * len(wkg_hrs_list)
+            d[sn] = [act_wkg_hrs, '', '']
 
-            else:
-                act_wkg_hrs = [''] * len(wkg_hrs_list)
-                sdict[sn] = [act_wkg_hrs, '', '']
-
-        return sdict
+        return d
 
     @staticmethod
-    def write_staff_rows(ordered_sdict, start_row, ws, fmt):
+    def write_staff_rows(ordered_dict, start_row, ws, fmt):
+        """"Write staff row content.
 
-        for index, k in enumerate(ordered_sdict.keys()):
+        :param ordered_dict:           Ordered dictionary of staff and their associated content
+        :param start_row:               Row to start writing staff content on in the worksheet
+        :param ws:                      Worksheet object
+        :param fmt:                     Formatting object
 
-            v = ordered_sdict[k]
+        """
+
+        for index, k in enumerate(ordered_dict.keys()):
+
+            v = ordered_dict[k]
 
             # set row number
             row = start_row + index
@@ -405,6 +256,14 @@ class BuildStaffWorkbooks:
 
     @staticmethod
     def write_totals_row(ws, totals_row, start_row, f):
+        """Calculate the monthly totals rows and write them to the worksheet.
+
+        :param ws:              Worksheet object
+        :param totals_row:      Totals row number
+        :param start_row:       Start row number
+        :param  f:              Cell format
+
+        """
 
         # set alpha string to be called by index
         alpha_str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -422,65 +281,42 @@ class BuildStaffWorkbooks:
 
         ws.write('O{0}'.format(totals_row), '', f)
 
-    def populate_staff_info(self, ws, staff_list, key, value, wkg_hrs_list, fmt):
+    def populate_staff_info(self, ws, staff_list, wkg_hrs_list, fmt):
+        """Create staff rows in worksheets.
+
+        :param ws:                      Worksheet object
+        :param staff_list:              List of all staff
+        :param wkg_hrs_list:            List of working hours for each month
+        :param fmt:                     Formatting object
+
+        """
 
         # start row
         start_row = 16
 
-        sdict = {}
-
-        # add data to dict where staff have hours on project
-        sdict_whrs = self.get_staff_with_hours(value, staff_list, wkg_hrs_list)
-
         # add data to dict where staff do not have hours on the project
-        sdict = self.get_staff_without_hours(sdict_whrs, staff_list, wkg_hrs_list)
+        d = self.create_staff_row_content(staff_list, wkg_hrs_list)
 
         # order dictionary
-        ordered_sdict = collections.OrderedDict(sorted(sdict.items()))
+        ordered_dict = collections.OrderedDict(sorted(d.items()))
 
         # write staff information to worksheet; get row for totals
-        totals_row = self.write_staff_rows(ordered_sdict, start_row, ws, fmt)
+        totals_row = self.write_staff_rows(ordered_dict, start_row, ws, fmt)
 
         # write totals row
         self.write_totals_row(ws, totals_row, start_row, fmt[4])
 
-    @staticmethod
-    def populate_project_info(ws, k, v, fmt):
-
-        # unpack key
-        pm, pid, pname = k.split('|')
-
-        # unpack val
-        prob = float(v[0][3]) * 100
-
-        # write project data
-        ws.write('B8', prob, fmt[2])
-        ws.write('B3', pid, fmt[2])
-        ws.write('B4', pname, fmt[2])
-        ws.write('B9', pm, fmt[2])
-
-    def create_project_worksheet(self, d, pm_name, wbook, staff_list, fmt, target_fy, wkg_hrs_list):
-
-        for k in d.keys():
-
-            v = d[k]
-
-            if pm_name in k:
-
-                # unpack vars
-                pm, pid, pname = k.split('|')
-
-                # create workbook for each project
-                ws = wbook.add_worksheet(pid)
-
-                # write static worksheet content
-                self.write_static_worksheet_content(ws, fmt, target_fy, wkg_hrs_list)
-
-                # write dynamic content
-                self.populate_project_info(ws, k, v, fmt)
-                self.populate_staff_info(ws, staff_list, k, v, wkg_hrs_list, fmt)
-
     def create_empty_worksheets(self, wbook, staff_list, fmt, target_fy, wkg_hrs_list, num_sheets):
+        """Create empty worksheets for each workbook
+
+        :param wbook:                   Workbook object
+        :param staff_list:              List of all staff
+        :param fmt:                     Formatting object
+        :param target_fy:               Two-digit target year
+        :param wkg_hrs_list:            List of working hours per month
+        :param num_sheets:              The number of template sheets to create
+
+        """
 
         # create the specified number of blank project sheets
         for i in range(1, (num_sheets + 1), 1):
@@ -501,66 +337,45 @@ class BuildStaffWorkbooks:
             ws.write('B9', '', fmt[2])
 
             # write staff area
-            self.populate_staff_info(ws, staff_list, '', '', wkg_hrs_list, fmt)
+            self.populate_staff_info(ws, staff_list, wkg_hrs_list, fmt)
 
-    @staticmethod
-    def create_out_staff_file(staff_list, out_staff_file):
+    def read_staff_file(self):
+        """Read and process input staff file.  A labor planning workbook will be generated for each
+        staff member in this file.
 
-        # create out string of staff names delimited by semicolon
-        out_string = ''
-        for i in staff_list:
-            out_string += '{0};'.format(i)
+        :return:                            List of staff full names
 
-        # write out file
-        with open(out_staff_file, 'w') as out:
-            out.write(out_string)
+        """
+        df = pd.read_csv(self.staffing_file)
+
+        df.fillna('', inplace=True)
+
+        df['middle_initial'] = df['middle_initial'].replace(' ', '')
+
+        df['full_name']= np.where(df['middle_initial'] == '',
+                                     df['last_name'] + ', ' + df['first_name'],
+                                     df['last_name'] + ', ' + df['first_name'])
+
+        return df['full_name'].tolist()
 
     def build(self):
+        """Method to build all staff worksheets."""
 
-        # make directories if they do not exits
-        self.make_dirs([self.out_sheets_dir, self.admin_dir])
+        # make staff sheet directory if it does not exist
+        if not os.path.exists(self.out_staff_sheets_dir):
+            os.makedirs(self.out_staff_sheets_dir)
 
-        # bring in data and output processed data as a dict
-        data_dict = self.process_input_data(self.in_file, self.target_fy)
+        staff_list = self.read_staff_file()
 
-        # get a unique list of staff names
-        map_staff_list = self.get_staff_names(data_dict)
-
-        # get a unique list of pm names
-        pm_list = self.get_pm_names(data_dict)
-
-        # get a unique list of PMs and Staff
-        staff_list = self.combine_list_unique(map_staff_list, pm_list)
-
-        # write staff list output file
-        self.create_out_staff_file(staff_list, self.out_staff_file)
-
-        for index, pm_name in enumerate(staff_list):
-
-            # format staff name to be file name
-            file_name = self.format_file_name(pm_name.lower())
+        for pm_name in staff_list:
 
             # set out_file name
-            wb_file = os.path.join(self.out_sheets_dir, "{0}.xlsx".format(file_name))
+            wb_file = os.path.join(self.out_staff_sheets_dir, "{}.xlsx".format(self.format_file_name(pm_name)))
 
-            # create Excel workbook for staff member
-            wbook = xlsxwriter.Workbook(wb_file)
+            with xlsxwriter.Workbook(wb_file) as wbook:
 
-            # set workbook formatting
-            fmt = self.set_formatting(wbook)
+                # set workbook formatting
+                fmt = self.set_formatting(wbook)
 
-            # create project worksheet
-            self.create_project_worksheet(data_dict, pm_name, wbook, staff_list, fmt, self.target_fy, self.wkg_hrs_list)
-
-            # create blank worksheets
-            self.create_empty_worksheets(wbook, staff_list, fmt, self.target_fy, self.wkg_hrs_list, self.num_blank_wksheets)
-
-            # close workbook
-            wbook.close()
-
-
-if __name__ == '__main__':
-
-    in_dir = "/users/d3y010/projects/organizational/labor_planning/dale"
-
-    BuildStaffWorkbooks(in_dir).build()
+                # create blank worksheets
+                self.create_empty_worksheets(wbook, staff_list, fmt, self.target_fy, self.wkg_hrs_list, self.num_blank_wksheets)
