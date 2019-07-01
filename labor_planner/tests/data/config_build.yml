@@ -17,10 +17,10 @@ project:
   staff_workbook_dir: "./data/inputs/FY_2018"
 
   # build staff labor planning workbooks [True to build, False to not build]
-  build_workbooks:  False
+  build_workbooks:  True
 
   # run labor planner to create forecasting output workbooks
-  run_labor_planner:  True
+  run_labor_planner:  False
 
 
 # build staff labor planning workbooks settings
