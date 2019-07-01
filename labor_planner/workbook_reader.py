@@ -9,6 +9,7 @@ Read and format staff labor planning workbooks.
 import os
 import collections
 
+import numpy as np
 import pandas as pd
 import xlrd
 
@@ -239,15 +240,23 @@ class ReadWorkbooks:
         return [i for i in os.listdir(self.my_settings.data_dir) if os.path.splitext(i)[-1] in extensions]
 
     def get_staff_list(self):
-        """Get a list of staff from the current staff file.
+        """Read and process input staff file.  A labor planning workbook will be generated for each
+        staff member in this file.
 
-        :return:                        List of staff to evaluate.
+        :return:                            List of staff full names
 
         """
-        with open(self.my_settings.in_staff_csv) as get:
-            s = get.read()
+        df = pd.read_csv(self.my_settings.in_staff_csv)
 
-        return [i for i in s.strip().split(';') if len(i) > 0]
+        df.fillna('', inplace=True)
+
+        df['middle_initial'] = df['middle_initial'].replace(' ', '')
+
+        df['full_name']= np.where(df['middle_initial'] == '',
+                                     df['last_name'] + ', ' + df['first_name'],
+                                     df['last_name'] + ', ' + df['first_name'])
+
+        return df['full_name'].tolist()
 
     def create_time_span_list(self):
         """Create a list of 12 values to iterate through for col position.
