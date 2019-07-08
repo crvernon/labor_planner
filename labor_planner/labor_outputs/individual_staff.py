@@ -129,24 +129,26 @@ class IndividualHours:
             if self.config_obj.design == 'quarter_3_4':
                 ws.merge_range('E5:G5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
+
             elif self.config_obj.design == 'quarter_2_3':
                 ws.merge_range('E5:G5', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
+
             elif self.config_obj.design == 'quarter_3_4_1':
                 ws.merge_range('E5:G5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('K5:M5', 'Quarter 1 - FY{0}'.format(int(self.config_obj.fy) + 1), merge_format)
+
             elif self.config_obj.design == 'quarter_2_3_4':
                 ws.merge_range('E5:G5', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('K5:M5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
+
             elif self.config_obj.design == 'full_year':
                 ws.merge_range('E5:G5', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('K5:M5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('N5:P5', 'Quarter 1 - FY{0}'.format(int(self.config_obj.fy) + 1), merge_format)
-
-            # ws.merge_range('L5:N5', 'Quarter 1 - FY17', merge_format)
 
             # write content to worksheet
             for iteration, i in enumerate(v):
