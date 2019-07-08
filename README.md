@@ -31,7 +31,7 @@ If no error is returned then you are ready to go!
 
 ## Setting up a run
 
-### Setup the `config.yaml` file
+### Setup the `config.yml` file
 There is an example config file in the `labor_planner/example` directory of this package that describes each input.
 
 There are three main blocks using in the `labor_planner` configuration file:  `project`, `builder`, and `planner`.  Each block contains key, value pairs for each required setting.  The following details available settings:
