@@ -87,8 +87,8 @@ LaborPlanner('<path-to-config-file>')
 
 ## Outputs
 The following five outputs will be saved to the outputs directory assigned in the config file:
-- `overview_chart.xlsx`:  Contains a single worksheet showing the probability of funding for each staff member with a link to their individual planning worksheet. Also provides a bar chart of funding per probability range.
+- `overview_chart.xlsx`:  Contains a single worksheet showing the probability of funding for each staff member with a link to their individual planning worksheet. Also provides a bar chart of funding per probability range.  Staff member names are linked to their corresponding `individual_staff_summary.xlsx` sheets.
 - `projects.xlsx`:  Contains a worksheet for every project and the staff that contribute to them.
-- `individual_staff_summary.xlsx`:  Contains a worksheet for each individual staff member that details each project, funding probability, project hours per month and a link to the associated project worksheet.
+- `individual_staff_summary.xlsx`:  Contains a worksheet for each individual staff member that details each project, funding probability, project hours per month and a link to the associated project worksheet.  Each project number is linked to their corresponding `project.xlsx` sheet.
 - `rollup.xlsx`:  Contains a single worksheet that highlights the degree of funding for each staff member per month.
-- `summary.xlsx`:  Contains worksheets for total staff and projects; charts for staff per project, hours per project; data with links for staff per project and total hours.
+- `summary.xlsx`:  Contains worksheets for total staff and projects; charts for staff per project, hours per project; data with links for staff per project and total hours.  Tabular summary worksheets allow a linkage between the project number and the associated `projects.xlsx` sheet.
