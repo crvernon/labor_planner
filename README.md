@@ -40,11 +40,11 @@ There are three main blocks using in the `labor_planner` configuration file:  `p
 
 | key | description |
 | -- | -- |
-| `input_directory` | "<full path to the directory containing the staff spreadsheet directories>" |
-| `staff_file` | "<full path with file name and extension to the input _all_staff.csv_ file>" |
-| `work_hours_csv` | "<full path with file name and extension to the _work_hours.csv_ file>" |
+| `input_directory` | full path to the directory containing the staff spreadsheet directories>" |
+| `staff_file` | "full path with file name and extension to the input _all_staff.csv_ file" |
+| `work_hours_csv` | "full path with file name and extension to the _work_hours.csv_ file" |
 | `fiscal_year` | Four digit year as an integer. E.g., 2019 |
-| 'staff_workbook_dir' | "<full path to the directory where the staff labor planning workbooks are stored>" |
+| 'staff_workbook_dir' | "full path to the directory where the staff labor planning workbooks are stored" |
 | `build_workbooks` | Boolean.  True or False.  `True` to build a staff workbook for each staff member listed in the all_staff.csv file.  NOTE:  Change the `staff_workbook_dir` path before running this or the example worksheets will be overwritten. Also, this can not be `True` if `run_labor_planner` is also set to `True`. |
 | `run_labor_planner` | Boolean.  True or False.  `True` to run the labor planner and generate summary outputs.  NOTE, this can not be `True` if `build_workbooks` is also set to `True`. |
 
@@ -58,7 +58,7 @@ There are three main blocks using in the `labor_planner` configuration file:  `p
 
 | key | description |
 | -- | -- |
-| `output_directory` | "<full path with to the directory where the outputs will be written>" |
+| `output_directory` | "full path with to the directory where the outputs will be written" |
 | `run_design` | Either "full_year", "quarter_2_3", "quarter_3_4", or "quarter_3_4_1" |
 
 ### Setup the reference files
