@@ -37,7 +37,7 @@ class ReadWorkbooks:
 
         # set source header value lists
         self.wkg_hours_hdr = self.work_hours_row[:-1]
-        self.time_span_hdr = self.total_month_range_row[:-1]
+        self.time_span_hdr = self.total_month_range_row
 
         # create list of input files
         self.file_list = self.get_files_list()
