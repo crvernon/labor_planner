@@ -36,6 +36,6 @@ setup(
     license='MIT',
     author='Chris R. Vernon',
     author_email='chris.vernon@pnnl.gov',
-    description='Plan and visualize staff labor fiscal year allocation',
+    description='Plan and visualize staff labor calendar year allocation',
     python_requires='>=3.3.*, <4'
 )
