@@ -25,7 +25,7 @@ class IndividualHours:
         right_bold = indiv_plan_wkbook.add_format({'bold': 1, 'align': 'right'})
         bold_1 = indiv_plan_wkbook.add_format({'bold': 1})
         big_bold = indiv_plan_wkbook.add_format({'bold': 2, 'size': 22})
-        merge_format = indiv_plan_wkbook.add_format({'border': 1, 'align': 'center'})
+        merge_format = indiv_plan_wkbook.add_format({'border': 1, 'align': 'center', 'bold': 1})
         center = indiv_plan_wkbook.add_format({'align': 'center'})
         right = indiv_plan_wkbook.add_format({'align': 'right'})
         url_format = indiv_plan_wkbook.add_format({'font_color': 'blue', 'underline': 0})
@@ -91,6 +91,9 @@ class IndividualHours:
                 end_col = 'M'
                 total_col = 'N'
 
+            # set full date range for coverage period
+            full_date_range = '{}-{}'.format(row_15_l[0].split('-')[0], row_15_l[-1].split('-')[1])
+
             # set column widths
             ws.set_column('A:A', 10)
             ws.set_column('B:B', 10)
@@ -121,7 +124,6 @@ class IndividualHours:
             ws.write('D8', 'Processing Month =', right)
 
             # write column E information
-            ws.write_row('E6', row_13_l, center)
             ws.write_row('E7', row_14_l, center)
             ws.write_row('E8', row_15_l, center)
 
@@ -129,26 +131,37 @@ class IndividualHours:
             if self.config_obj.design == 'quarter_3_4':
                 ws.merge_range('E5:G5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
+                ws.write('K5', '{}'.format(row_13_l[0]), merge_format)
+                ws.write('K8', full_date_range, center)
 
             elif self.config_obj.design == 'quarter_2_3':
                 ws.merge_range('E5:G5', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
+                ws.write('K5', '{}'.format(row_13_l[0]), merge_format)
+                ws.write('K8', full_date_range, center)
 
             elif self.config_obj.design == 'quarter_3_4_1':
                 ws.merge_range('E5:G5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('K5:M5', 'Quarter 1 - FY{0}'.format(int(self.config_obj.fy) + 1), merge_format)
+                ws.write('P5', '{}'.format(row_13_l[0]), merge_format)
+                ws.write('P8', full_date_range, center)
 
             elif self.config_obj.design == 'quarter_2_3_4':
                 ws.merge_range('E5:G5', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('K5:M5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
+                ws.write('P5', '{}'.format(row_13_l[0]), merge_format)
+                ws.write('P8', full_date_range, center)
+
 
             elif self.config_obj.design == 'full_year':
                 ws.merge_range('E5:G5', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('H5:J5', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('K5:M5', 'Quarter 4 - FY{0}'.format(self.config_obj.fy), merge_format)
                 ws.merge_range('N5:P5', 'Quarter 1 - FY{0}'.format(int(self.config_obj.fy) + 1), merge_format)
+                ws.write('Q5', '{}'.format(row_13_l[0]), merge_format)
+                ws.write('Q8', full_date_range, center)
 
             # write content to worksheet
             for iteration, i in enumerate(v):
