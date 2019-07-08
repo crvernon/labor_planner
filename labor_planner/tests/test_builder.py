@@ -6,7 +6,7 @@ from labor_planner.labor_builder.build_staff_workbooks import BuildStaffWorkbook
 
 
 class TestBuilder(unittest.TestCase):
-    """Test configuration integrity."""
+    """Test BuildStaffWorkbooks attributes."""
 
     TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
     TEST_CONFIG_FILE = os.path.join(TEST_DATA_DIR, 'config_build.yml')
@@ -33,3 +33,10 @@ class TestBuilder(unittest.TestCase):
         n_months = len(TestBuilder.TEST_READ_OBJ.mth_span_list)
 
         self.assertEqual(n_months, 12)
+
+    def test_only_integer(self):
+        """Ensure only integer values exist."""
+
+        for i in TestBuilder.TEST_READ_OBJ.wkg_hrs_list:
+
+            self.assertIs(type(i), int)
