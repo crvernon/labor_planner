@@ -33,7 +33,7 @@ setup(
     version='1.0.0',
     packages=find_packages(),
     url='https://github.com/crvernon/labor_planner',
-    license='MIT',
+    license='BSD 2-Clause',
     author='Chris R. Vernon',
     author_email='chris.vernon@pnnl.gov',
     description='Plan and visualize staff labor calendar year allocation',

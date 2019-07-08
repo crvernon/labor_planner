@@ -2,7 +2,8 @@
 
 Configuration reader for YAML.
 
-@author Chris R. Vernon (chris.vernon@pnnl.gov)
+@author Chris R. Vernon @author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clausechris.vernon@pnnl.gov)
 
 """
 

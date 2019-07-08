@@ -1,3 +1,12 @@
+"""test_stage_data.py
+
+Test for Stage class.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
+
+"""
+
 import os
 import unittest
 

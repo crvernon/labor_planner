@@ -1,3 +1,12 @@
+"""test_worksheet_reader.py
+
+Test for ReadWorkbooks class.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
+
+"""
+
 import os
 import unittest
 

@@ -1,3 +1,12 @@
+"""build_staff_workbooks.py
+
+Build staff workbooks to hold hours data.
+
+@author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
+
+"""
+
 import os
 import collections
 

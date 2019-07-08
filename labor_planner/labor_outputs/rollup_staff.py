@@ -3,6 +3,7 @@
 Build rollup workbook for staff hours indicators of performance.
 
 @author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
 
 """
 

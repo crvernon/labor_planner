@@ -3,8 +3,10 @@
 Build staff and project overview workbook.
 
 @author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
 
 """
+
 
 import os
 import xlsxwriter

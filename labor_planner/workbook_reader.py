@@ -3,6 +3,7 @@
 Read and format staff labor planning workbooks.
 
 @author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
 
 """
 

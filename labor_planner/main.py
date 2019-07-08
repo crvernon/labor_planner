@@ -3,6 +3,7 @@
 Execute labor planning code.
 
 @author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
 
 """
 import argparse

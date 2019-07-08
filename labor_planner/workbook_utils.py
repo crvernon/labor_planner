@@ -3,6 +3,7 @@
 Broadly used workbook utility functions.
 
 @author Chris R. Vernon (chris.vernon@pnnl.gov)
+@license BSD 2-Clause
 
 """
 
