@@ -62,7 +62,7 @@ class Rollup:
             # define date range for design
             ts_1 = self.read_obj.time_span_hdr[0].split('-')[0]
             ts_2 = self.read_obj.time_span_hdr[-1].split('-')[1]
-            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
+            date_range = '{0} {1} - {2} {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -81,7 +81,7 @@ class Rollup:
             # define date range for design
             ts_1 = alt_time_span[0].split('-')[0]
             ts_2 = alt_time_span[-1].split('-')[1]
-            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
+            date_range = '{0} {1} - {2} {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -99,7 +99,7 @@ class Rollup:
             # define date range for design
             ts_1 = alt_time_span[0].split('-')[0]
             ts_2 = alt_time_span[-1].split('-')[1]
-            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
+            date_range = '{0} {1} - {2} {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -116,7 +116,7 @@ class Rollup:
             # define date range for design
             ts_1 = alt_time_span[0].split('-')[0]
             ts_2 = alt_time_span[-1].split('-')[1]
-            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
+            date_range = '{0} {1} - {2} {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -132,7 +132,7 @@ class Rollup:
             # define date range for design
             ts_1 = alt_time_span[0].split('-')[0]
             ts_2 = alt_time_span[-1].split('-')[1]
-            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
+            date_range = '{0} {1} - {2} {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -150,7 +150,7 @@ class Rollup:
             # define date range for design
             ts_1 = alt_time_span[0].split('-')[0]
             ts_2 = alt_time_span[-1].split('-')[1]
-            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
+            date_range = '{0} {1} - {2} {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged self.config_obj
             rollup_ws1.merge_range('B9:D9', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -163,11 +163,11 @@ class Rollup:
         rollup_ws1.write('A6', 'Key:')
         rollup_ws1.write('A7', 'Key Explanation:')
         rollup_ws1.write('B6', 'Trouble', bold_bkg_red)
-        rollup_ws1.write('B7', '<= 50% Covered', bold_bkg_red)
+        rollup_ws1.write('B7', '< 51% Covered', bold_bkg_red)
         rollup_ws1.write('C6', 'Watch', bold_bkg_yellow)
         rollup_ws1.write('C7', '51-80% Covered', bold_bkg_yellow)
         rollup_ws1.write('D6', 'No Worries', bold_bkg_green)
-        rollup_ws1.write('D7', '=> 81% Covered', bold_bkg_green)
+        rollup_ws1.write('D7', '> 80% Covered', bold_bkg_green)
         rollup_ws1.write('A9', 'Technical Group', border_1)
         rollup_ws1.write('A10', '', border_gray)
         rollup_ws1.write('A11', 'Wkg Hrs Available =', border_gray_right)
@@ -245,6 +245,7 @@ class Rollup:
 
                 # get 80% hour value for watch conditional bound
                 watch_max_value = (wkg_hours_hdr_list[i] * 0.8)
+
             # TODO:  raise specific exception
             except:
                 trouble_max_value = (avail_hours_sum * 0.5)
@@ -255,7 +256,7 @@ class Rollup:
             end_cell = xlsxwriter.utility.xl_rowcol_to_cell(data_end_row_index, i+1)
 
             # apply trouble condition
-            trouble_condition = rollup_ws1.conditional_format('{0}:{1}'.format(start_cell, end_cell),
+            rollup_ws1.conditional_format('{0}:{1}'.format(start_cell, end_cell),
                                 {'type': 'cell',
                                  'criteria': '<=',
                                  'value': trouble_max_value,
@@ -263,7 +264,7 @@ class Rollup:
                                  })
 
             # apply watch condition
-            watch_condition = rollup_ws1.conditional_format('{0}:{1}'.format(start_cell, end_cell),
+            rollup_ws1.conditional_format('{0}:{1}'.format(start_cell, end_cell),
                                 {'type': 'cell',
                                  'criteria': 'between',
                                  'minimum': (trouble_max_value + 0.01),
@@ -272,7 +273,7 @@ class Rollup:
                                  })
 
             # apply no worries condition
-            no_worries_condition = rollup_ws1.conditional_format('{0}:{1}'.format(start_cell, end_cell),
+            rollup_ws1.conditional_format('{0}:{1}'.format(start_cell, end_cell),
                                 {'type': 'cell',
                                  'criteria': '>',
                                  'value': watch_max_value,
