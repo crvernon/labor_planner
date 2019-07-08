@@ -43,7 +43,7 @@ class Overview:
         graph_ws1.set_column('B:D', 28)
 
         # Write headers to worksheet
-        graph_ws1.merge_range('B1:D1', 'Proportion of FTE Covered in FY{0}'.format(self.config_obj.fy), header_merge_format)
+        graph_ws1.merge_range('B1:D1', merged_header_text, header_merge_format)
         graph_ws1.write('A2', 'Staff Member', bold_1)
         graph_ws1.write_row('B2', header_list, bold_center)
 
