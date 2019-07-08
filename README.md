@@ -82,7 +82,7 @@ Ensure that you are using the desired `python` instance then run:
 
 ```python
 from labor_planner import LaborPlanner
-LaborPlanner('<path-to-config-file')
+LaborPlanner('<path-to-config-file>')
 ```
 
 ## Outputs
