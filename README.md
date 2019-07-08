@@ -40,7 +40,7 @@ There are three main blocks using in the `labor_planner` configuration file:  `p
 
 | key | description |
 | -- | -- |
-| `input_directory` | full path to the directory containing the staff spreadsheet directories>" |
+| `input_directory` | "full path to the directory containing the staff spreadsheet directories" |
 | `staff_file` | "full path with file name and extension to the input _all_staff.csv_ file" |
 | `work_hours_csv` | "full path with file name and extension to the _work_hours.csv_ file" |
 | `fiscal_year` | Four digit year as an integer. E.g., 2019 |
