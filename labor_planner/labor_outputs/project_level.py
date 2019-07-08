@@ -34,11 +34,8 @@ class Projects:
         border_gray_center = util.enable_formatting(project_wkbook)[9]
         percent_format = util.enable_formatting(project_wkbook)[10]
 
-        # Set worksheet index for naming convention
-        ws_index = 0
-
         # Iterate through project dictionary
-        for k in self.read_obj.projects_dict.keys():
+        for ws_index, k in enumerate(self.read_obj.projects_dict.keys()):
 
             v = self.read_obj.projects_dict[k]
 
@@ -49,7 +46,6 @@ class Projects:
             # instantiate worksheet
             set_ws_name = 'sheet_{0}'.format(ws_index)
             prj_ws = project_wkbook.add_worksheet(set_ws_name)
-            ws_index += 1
 
             # Set column widths
             prj_ws.set_column('A:A', 20)
@@ -85,9 +81,11 @@ class Projects:
             prj_ws.write_row('B10', month_hdr_list, border_gray_center)
             prj_ws.write_row('B11', wkg_hours_hdr_list, border_gray_center)
             prj_ws.write_row('B12', time_span_hdr_list, border_gray_center)
+
             prj_ws.write('{0}10'.format(totals_column), 'Total', border_gray_center)
             prj_ws.write('{0}11'.format(totals_column), avail_hours_sum, border_gray_center)
             prj_ws.write('{0}12'.format(totals_column), date_range, border_gray_center)
+
             prj_ws.write('{0}10'.format(percent_column), '', border_gray_center)
             prj_ws.write('{0}11'.format(percent_column), 'Percent Covered', border_gray_center)
             prj_ws.write('{0}12'.format(percent_column), '', border_gray_center)
@@ -100,7 +98,7 @@ class Projects:
 
                 # assign variables
                 staff_name = i[0]
-                staff_hours = i[2] #implement_design(design, i[2])
+                staff_hours = i[2]
                 staff_hours_sum = sum(staff_hours)
                 percent_covered = (float(staff_hours_sum) / avail_hours_sum)
 
