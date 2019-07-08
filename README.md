@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/crvernon/labor_planner.svg?branch=master)](https://travis-ci.org/crvernon/labor_planner)
 
 # labor_planner
-Plan and visualize staff fiscal year labor allocation
+Plan and visualize staff calendar year labor allocation
 
 ## Contact
 Chris R. Vernon (chris.vernon@pnnl.gov)
@@ -37,10 +37,10 @@ There is an example config file in the `labor_planner/example` directory of this
 ### Setup the reference files
 There are two reference files that are necessary to run this package (examples included in package):
 - `staff_list.csv`:  This file is a semicolon separated list of staff names that match the names of each individual in the input Excel staff sheets
-- `work_hours.csv`:  This file contains month abbreviation, start month, start day, end month, end day, and work hours associated with each month for the fiscal year
+- `work_hours.csv`:  This file contains month abbreviation, start month, start day, end month, end day, and work hours associated with each month for the calendar year
 
 ### Setup the staff data files
-An Excel workbook must exist for each staff member.  The name of the workbook must be in the following format: `<lastname>_<firstname>_<middleinitial-if-exists>.xlsx`.  See examples for formatted workbooks.  Each workbook has multiple worksheets.  Each worksheet is representative of one project that the staff member manages.  Only the managing staff member should fill out a sheet for their project.  This sheet should include the projected hours for all staff that are participating on their project.  All staff workbooks should be nested in a directory named like the following: `FY_<four-digit-fiscal-year`.
+An Excel workbook must exist for each staff member.  The name of the workbook must be in the following format: `<lastname>_<firstname>_<middleinitial-if-exists>.xlsx`.  See examples for formatted workbooks.  Each workbook has multiple worksheets.  Each worksheet is representative of one project that the staff member manages.  Only the managing staff member should fill out a sheet for their project.  This sheet should include the projected hours for all staff that are participating on their project.  All staff workbooks should be nested in a directory named like the following: `FY_<four-digit-calendar-year`.
 
 ## Running `labor_planner`
 
