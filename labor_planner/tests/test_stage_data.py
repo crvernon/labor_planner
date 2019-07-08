@@ -21,7 +21,16 @@ class TestStageData(unittest.TestCase):
         self.assertGreaterEqual(TestStageData.TEST_DATA.avail_hours_sum, 0)
         self.assertLessEqual(TestStageData.TEST_DATA.avail_hours_sum, 8784)
 
-    def test_wkg_hours_hdr_dict(self):
-        """Ensure dict not empty."""
+    def test_not_empty(self):
+        """Ensure object not empty."""
 
         self.assertGreater(len(TestStageData.TEST_DATA.wkg_hours_hdr_list), 0)
+        self.assertGreater(len(TestStageData.TEST_DATA.project_path_dict), 0)
+        self.assertGreater(len(TestStageData.TEST_DATA.name_list), 0)
+        self.assertGreater(len(TestStageData.TEST_DATA.percent_list), 0)
+
+    def test_value_int(self):
+        """Ensure attribute has an integer value."""
+
+        self.assertIs(type(TestStageData.TEST_DATA.avail_hours_sum), int)
+        self.assertIs(type(TestStageData.TEST_DATA.end_row), int)
