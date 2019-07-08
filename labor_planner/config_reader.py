@@ -6,7 +6,6 @@ Configuration reader for YAML.
 
 """
 
-
 import os
 import yaml
 
@@ -28,35 +27,61 @@ class ReadConfig:
 
     """
 
-    # expected keys in the YAML configuration file
-    YAML_KEYS = ('input_directory', 'output_directory', 'staff_csv', 'work_hours_csv', 'fiscal_year')
+    PROJECT_KEY = 'project'
+    BUILDER_KEY = 'builder'
+    PLANNER_KEY = 'planner'
+    PROJECT_KEY_REQ = ['input_directory', 'staff_file', 'work_hours_csv', 'fiscal_year', 'staff_workbook_dir']
+    BUILDER_KEY_REQ = ['num_blank_wksheets']
+    PLANNER_KEY_REQ = ['output_directory', 'run_design']
 
     def __init__(self, config_file):
 
         d = self.read_yaml(config_file)
 
-        self.in_dir = self.check_directory(d['input_directory'])
-        self.out_dir = self.check_directory(d['output_directory'])
-        self.in_staff_csv = self.check_file(d['staff_csv'])
-        self.in_work_hours = self.check_file(d['work_hours_csv'])
+        # ensure all needed content is in the configuration file
+        self.check_content(d)
 
-        # output files
-        self.out_overview_file = os.path.join(self.out_dir, "overview_chart.xlsx")
-        self.out_individ_file = os.path.join(self.out_dir, "individual_staff_summary.xlsx")
-        self.out_rollup_file = os.path.join(self.out_dir, "rollup.xlsx")
-        self.out_project_file = os.path.join(self.out_dir, "projects.xlsx")
-        self.out_summary_file = os.path.join(self.out_dir, "summary.xlsx")
+        # project level settings
+        project = d['project']
 
-        self.fiscal_year = self.check_fiscal_year(d['fiscal_year'])
+        self.in_dir = self.check_directory(project['input_directory'])
+        self.in_staff_csv = self.check_file(project['staff_file'])
+        self.in_work_hours = self.check_file(project['work_hours_csv'])
+        self.fiscal_year = self.check_fiscal_year(project['fiscal_year'])
+        self.data_dir = self.check_directory(project['staff_workbook_dir'])
 
-        # create data directory path where staff workbooks are stored
-        self.data_dir = self.check_directory(os.path.join(self.in_dir, "FY_{}".format(self.fiscal_year)))
+        self.build = project['build_workbooks']
+        self.plan = project['run_labor_planner']
+
+        if (self.build is True) and (self.plan is True):
+            msg = """`build_workbooks` and `run_labor_planner` cannot both be set to `True`.
+                    Workbooks must be populated before running using `run_labor_planner` otherwise
+                    the outputs will be empty."""
+
+            raise RuntimeError(msg)
+
+        if self.build:
+
+            builder = d['builder']
+
+            self.num_blank_wksheets = int(builder['num_blank_wksheets'])
+
+        if self.plan:
+
+            planner = d['planner']
+
+            self.out_dir = self.check_directory(planner['output_directory'])
+            self.design = planner['run_design']
+
+            # output files
+            self.out_overview_file = os.path.join(self.out_dir, "overview_chart.xlsx")
+            self.out_individ_file = os.path.join(self.out_dir, "individual_staff_summary.xlsx")
+            self.out_rollup_file = os.path.join(self.out_dir, "rollup.xlsx")
+            self.out_project_file = os.path.join(self.out_dir, "projects.xlsx")
+            self.out_summary_file = os.path.join(self.out_dir, "summary.xlsx")
 
         # get last two digits of the fiscal year as a string
         self.fy = str(self.fiscal_year)[-2:]
-
-        # get run design
-        self.design = d['run_design']
 
     @staticmethod
     def check_file(f):
@@ -98,12 +123,6 @@ class ReadConfig:
         with open(ReadConfig.check_file(f)) as yml:
             d = yaml.safe_load(yml)
 
-        # ensure that all expected keys are present in the YAML dictionary
-        missing_keys = set(ReadConfig.YAML_KEYS) - set(d.keys())
-
-        if len(missing_keys) > 0:
-            raise KeyError("Missing the keys {} in configuration file: {}".format(missing_keys, f))
-
         return d
 
     @staticmethod
@@ -126,3 +145,44 @@ class ReadConfig:
 
         else:
             raise TypeError("'fiscal_year' value is type {}. Must be integer in YYYY format with no quotes.".format(y))
+
+    @staticmethod
+    def check_section_content(d, key, expected_list):
+        """Ensure all desired parameters have been defined for a section
+
+        :param d:                   Input config_obj object
+        :param key:                 Category key
+        :param expected_list:       List of subcategory keys
+
+        """
+        category_msg = 'Missing the following category key in configuration file:  {}'
+        subcat_msg = 'Missing the following subcategories for the "{}" category in the configuration file:  {}'
+
+        if key not in d:
+            raise KeyError(category_msg.format(key))
+
+        received_list = list(d[key].keys())
+
+        key_valid = set(expected_list) - set(received_list)
+
+        if len(key_valid) > 0:
+            raise KeyError(subcat_msg.format(key, key_valid))
+
+    @classmethod
+    def check_content(cls, d):
+        """Ensure all desired parameters have been defined in the configuration file.
+
+        :param d:                   Input config_obj object
+
+        """
+
+        # validate project level settings
+        cls.check_section_content(d, cls.PROJECT_KEY, cls.PROJECT_KEY_REQ)
+
+        # validate build level settings
+        if d[cls.PROJECT_KEY]['build_workbooks'] is True:
+            cls.check_section_content(d, cls.BUILDER_KEY, cls.BUILDER_KEY_REQ)
+
+        # validate planner level settings
+        if d[cls.PROJECT_KEY]['run_labor_planner'] is True:
+            cls.check_section_content(d, cls.PLANNER_KEY, cls.PLANNER_KEY_REQ)

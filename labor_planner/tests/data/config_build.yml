@@ -1,0 +1,40 @@
+# project level settings
+project:
+
+  # Full path to the directory containing the staff Excel spreadsheet directories
+  input_directory: "./data/inputs"
+
+  # Full path with file name and extension to the input staff file
+  staff_file: "./data/reference/all_staff.csv"
+
+  # Full path with file name and extension to the work hours CSV file
+  work_hours_csv: "./data/reference/work_hours.csv"
+
+  # Fiscal year to process in format YYYY
+  fiscal_year: 2018
+
+  # directory in which the staff labor planning workbooks are stored
+  staff_workbook_dir: "./data/inputs/FY_2018"
+
+  # build staff labor planning workbooks [True to build, False to not build]
+  build_workbooks:  True
+
+  # run labor planner to create forecasting output workbooks
+  run_labor_planner:  False
+
+
+# build staff labor planning workbooks settings
+builder:
+
+  # number of template labor planning worksheets to create in each workbook
+  num_blank_wksheets: 10
+
+
+# labor planner forecasting settings
+planner:
+
+  # Full path to the labor planning outputs directory
+  output_directory: "./data/outputs"
+
+  # Run type - choose from [full_year, quarter_2_3, quarter_3_4, quarter_3_4_1]
+  run_design: "full_year"

@@ -30,12 +30,12 @@ def get_requirements():
 
 setup(
     name='labor_planner',
-    version='0.1.0',
+    version='1.0.0',
     packages=find_packages(),
     url='https://github.com/crvernon/labor_planner',
     license='MIT',
     author='Chris R. Vernon',
     author_email='chris.vernon@pnnl.gov',
-    description='Plan and visualize staff labor fiscal year allocation',
+    description='Plan and visualize staff labor calendar year allocation',
     python_requires='>=3.3.*, <4'
 )

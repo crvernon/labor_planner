@@ -9,6 +9,7 @@ Read and format staff labor planning workbooks.
 import os
 import collections
 
+import numpy as np
 import pandas as pd
 import xlrd
 
@@ -36,7 +37,7 @@ class ReadWorkbooks:
 
         # set source header value lists
         self.wkg_hours_hdr = self.work_hours_row[:-1]
-        self.time_span_hdr = self.total_month_range_row[:-1]
+        self.time_span_hdr = self.total_month_range_row
 
         # create list of input files
         self.file_list = self.get_files_list()
@@ -187,18 +188,22 @@ class ReadWorkbooks:
 
     @staticmethod
     def set_probability(p):
-        """Set a probability between 0 and 1
+        """Set a probability between 0 and 1.
+
+        :param p:                       Probability value from user.
+
+        :return:                        Decimal probability from 0.0 to 1.
 
         """
         # convert funding probability to decimal
         if type(p) in (None, str):
-            p = 100
+            p = 100.0
 
         # account for fractional entries
         elif p <= 1:
-            p = p * 100
+            p *= 100.0
 
-        return round(p / 100, 2)
+        return round(p / 100.0, 2)
 
     def get_work_hour_rows(self):
         """Read work hours file and generate the work hours and total month range rows.
@@ -235,15 +240,23 @@ class ReadWorkbooks:
         return [i for i in os.listdir(self.my_settings.data_dir) if os.path.splitext(i)[-1] in extensions]
 
     def get_staff_list(self):
-        """Get a list of staff from the current staff file.
+        """Read and process input staff file.  A labor planning workbook will be generated for each
+        staff member in this file.
 
-        :return:                        List of staff to evaluate.
+        :return:                            List of staff full names
 
         """
-        with open(self.my_settings.in_staff_csv) as get:
-            s = get.read()
+        df = pd.read_csv(self.my_settings.in_staff_csv)
 
-        return [i for i in s.strip().split(';') if len(i) > 0]
+        df.fillna('', inplace=True)
+
+        df['middle_initial'] = df['middle_initial'].replace(' ', '')
+
+        df['full_name']= np.where(df['middle_initial'] == '',
+                                     df['last_name'] + ', ' + df['first_name'],
+                                     df['last_name'] + ', ' + df['first_name'])
+
+        return df['full_name'].tolist()
 
     def create_time_span_list(self):
         """Create a list of 12 values to iterate through for col position.
