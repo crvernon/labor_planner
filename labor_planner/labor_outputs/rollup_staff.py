@@ -60,7 +60,9 @@ class Rollup:
             percent_column = 'O'
 
             # define date range for design
-            date_range = 'Dec 27, {0} - Dec 25, {1}'.format(self.config_obj.fiscal_year, self.config_obj.fiscal_year+1)
+            ts_1 = self.read_obj.time_span_hdr[0].split('-')[0]
+            ts_2 = self.read_obj.time_span_hdr[-1].split('-')[1]
+            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -74,8 +76,12 @@ class Rollup:
             totals_column = 'K'
             percent_column = 'L'
 
+            alt_time_span = self.read_obj.time_span_hdr[0:9]
+
             # define date range for design
-            date_range = 'Dec 27, {0} - Sep 30, {1}'.format(self.config_obj.fiscal_year - 1, self.config_obj.fiscal_year)
+            ts_1 = alt_time_span[0].split('-')[0]
+            ts_2 = alt_time_span[-1].split('-')[1]
+            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -88,8 +94,12 @@ class Rollup:
             totals_column = 'H'
             percent_column = 'I'
 
+            alt_time_span = self.read_obj.time_span_hdr[0:6]
+
             # define date range for design
-            date_range = 'Dec 27, {0} - Jun 26, {1}'.format(self.config_obj.fiscal_year - 1, self.config_obj.fiscal_year)
+            ts_1 = alt_time_span[0].split('-')[0]
+            ts_2 = alt_time_span[-1].split('-')[1]
+            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -101,8 +111,12 @@ class Rollup:
             totals_column = 'E'
             percent_column = 'F'
 
+            alt_time_span = self.read_obj.time_span_hdr[0:3]
+
             # define date range for design
-            date_range = 'Dec 27, {0} - Mar 27, {1}'.format(self.config_obj.fiscal_year - 1, self.config_obj.fiscal_year)
+            ts_1 = alt_time_span[0].split('-')[0]
+            ts_2 = alt_time_span[-1].split('-')[1]
+            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -113,8 +127,12 @@ class Rollup:
             totals_column = 'K'
             percent_column = 'L'
 
+            alt_time_span = self.read_obj.time_span_hdr[3:]
+
             # define date range for design
-            date_range = 'Mar 28, {0} - Dec 25, {1}'.format(self.config_obj.fiscal_year, self.config_obj.fiscal_year + 1)
+            ts_1 = alt_time_span[0].split('-')[0]
+            ts_2 = alt_time_span[-1].split('-')[1]
+            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged headers
             rollup_ws1.merge_range('B9:D9', 'Quarter 2 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -127,8 +145,12 @@ class Rollup:
             totals_column = 'H'
             percent_column = 'I'
 
+            alt_time_span = self.read_obj.time_span_hdr[3:9]
+
             # define date range for design
-            date_range = 'Mar 28, {0} - Sep 30, {0}'.format(self.config_obj.fiscal_year)
+            ts_1 = alt_time_span[0].split('-')[0]
+            ts_2 = alt_time_span[-1].split('-')[1]
+            date_range = '{0}, {1} - {2}, {3}'.format(ts_1, self.config_obj.fiscal_year, ts_2, self.config_obj.fiscal_year+1)
 
             # write merged self.config_obj
             rollup_ws1.merge_range('B9:D9', 'Quarter 3 - FY{0}'.format(self.config_obj.fy), merge_format)
@@ -145,7 +167,7 @@ class Rollup:
         rollup_ws1.write('C6', 'Watch', bold_bkg_yellow)
         rollup_ws1.write('C7', '51-80% Covered', bold_bkg_yellow)
         rollup_ws1.write('D6', 'No Worries', bold_bkg_green)
-        rollup_ws1.write('D7', '> 81% Covered', bold_bkg_green)
+        rollup_ws1.write('D7', '=> 81% Covered', bold_bkg_green)
         rollup_ws1.write('A9', 'Technical Group', border_1)
         rollup_ws1.write('A10', '', border_gray)
         rollup_ws1.write('A11', 'Wkg Hrs Available =', border_gray_right)
