@@ -30,7 +30,7 @@ organizational workforce stability.
 We developed the `labor_planner` Python package to provide insight into whether
 staff are currently over- or under-committed and who, and which projects, are
 the key consumers of staff chargeable hours.  Our package also evaluates and
-visualizes projected labor allocation throughout a fiscal year to ensure staff
+visualizes projected labor allocation throughout a calendar year to ensure staff
 have time to complete existing project work and to assist staff who may not be
 projected to meet billable requirements.  The `labor_planner` information for each
 staff member are provided by project managers who distribute work among their
