@@ -92,3 +92,6 @@ The following five outputs will be saved to the outputs directory assigned in th
 - `individual_staff_summary.xlsx`:  Contains a worksheet for each individual staff member that details each project, funding probability, project hours per month and a link to the associated project worksheet.  Each project number is linked to their corresponding `project.xlsx` sheet.
 - `rollup.xlsx`:  Contains a single worksheet that highlights the degree of funding for each staff member per month.
 - `summary.xlsx`:  Contains worksheets for total staff and projects; charts for staff per project, hours per project; data with links for staff per project and total hours.  Tabular summary worksheets allow a linkage between the project number and the associated `projects.xlsx` sheet.
+
+## Community involvement
+`labor_planner` was built to be extensible.  It is our hope that the community will continue the development of this software.  Please submit a pull request for any work that you would like have considered as a core part of this package.  You will be properly credited for your work and it will be distributed under our current open-source license.  Any issues should be submitted through standard GitHub issue protocol and I will deal with these promptly.  
