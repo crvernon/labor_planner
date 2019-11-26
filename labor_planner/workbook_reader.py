@@ -76,6 +76,9 @@ class ReadWorkbooks:
 
         # Iterate through directory xlsx files
         for f in self.file_list:
+            # Ignore hidden files
+            if f[0] in ("~", "."):
+                continue
 
             # Get full path to workbook
             in_file = os.path.join(self.my_settings.data_dir, f)
