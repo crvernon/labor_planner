@@ -23,17 +23,17 @@ class BuildStaffWorkbooks:
      :param config_obj:                YAML configuration object
 
     """
-    GROUP_STAFF_COL = "A"
-    START_Q2_COL = "B"
-    END_Q2_COL = "D"
-    START_Q3_COL = "E"
-    END_Q3_COL = "G"
-    START_Q4_COL = "H"
-    END_Q4_COL = "J"
-    START_Q1_COL = "K"
-    END_Q1_COL = "M"
-    TOTAL_COL = "N"
-    PER_COL = "O"
+    GROUP_STAFF_COL = "B"
+    START_Q2_COL = "C"
+    END_Q2_COL = "E"
+    START_Q3_COL = "F"
+    END_Q3_COL = "H"
+    START_Q4_COL = "I"
+    END_Q4_COL = "K"
+    START_Q1_COL = "L"
+    END_Q1_COL = "N"
+    TOTAL_COL = "O"
+    PER_COL = "P"
 
     def __init__(self, config_obj):
 
@@ -272,7 +272,7 @@ class BuildStaffWorkbooks:
             tot_cell = '{0}{1}'.format(BuildStaffWorkbooks.TOTAL_COL, row)
             ws.write_formula(tot_cell, tot_form, f)
 
-            per_form = '{=' + tot_cell + '/ ({}14)}'.format(BuildStaffWorkbooks.TOTAL_COL),
+            per_form = '{=' + tot_cell + '/ ({}14)'.format(BuildStaffWorkbooks.TOTAL_COL) + '}'
             ws.write_formula('{0}{1}'.format(BuildStaffWorkbooks.PER_COL, row), per_form, fp)
 
         # return final staff row number + 1
