@@ -291,7 +291,7 @@ class BuildStaffWorkbooks:
 
         # set alpha string to be called by index
         alpha_str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        ws.write('A{0}'.format(totals_row), 'Total', f)
+        ws.write('{0}{1}'.format(BuildStaffWorkbooks.GROUP_STAFF_COL, totals_row), 'Total', f)
 
         # from B to N
         for i in range(1, 14, 1):
@@ -303,7 +303,7 @@ class BuildStaffWorkbooks:
             formula = '{=SUM(' + sum_range + ')}'
             ws.write_formula(target_cell, formula, f)
 
-        ws.write('O{0}'.format(totals_row), '', f)
+        ws.write('{0}{1}'.format(BuildStaffWorkbooks.PER_COL, totals_row), '', f)
 
     def populate_staff_info(self, ws, staff_list, wkg_hrs_list, fmt):
         """Create staff rows in worksheets.
