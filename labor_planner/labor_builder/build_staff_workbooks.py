@@ -264,16 +264,16 @@ class BuildStaffWorkbooks:
             act_wkg_hrs, act_hrs_total, tot_hrs_percent = v
 
             # write info
-            ws.write('A{0}'.format(row), k, f)
-            ws.write_row('B{0}'.format(row), act_wkg_hrs, f)
+            ws.write('{0}{1}'.format(BuildStaffWorkbooks.GROUP_STAFF_COL, row), k, f)
+            ws.write_row('{0}{1}'.format(BuildStaffWorkbooks.START_Q2_COL, row), act_wkg_hrs, f)
 
-            sum_range = 'B{0}:M{0}'.format(row)
+            sum_range = '{0}{2}:{1}{2}'.format(BuildStaffWorkbooks.START_Q2_COL, BuildStaffWorkbooks.END_Q1_COL, row)
             tot_form = '{=SUM(' + sum_range + ')}'
-            tot_cell = 'N{0}'.format(row)
+            tot_cell = '{0}{1}'.format(BuildStaffWorkbooks.TOTAL_COL, row)
             ws.write_formula(tot_cell, tot_form, f)
 
-            per_form = '{=' + tot_cell + '/ (N14)}'
-            ws.write_formula('O{0}'.format(row), per_form, fp)
+            per_form = '{=' + tot_cell + '/ ({}14)}'.format(BuildStaffWorkbooks.TOTAL_COL),
+            ws.write_formula('{0}{1}'.format(BuildStaffWorkbooks.PER_COL, row), per_form, fp)
 
         # return final staff row number + 1
         return row + 1
