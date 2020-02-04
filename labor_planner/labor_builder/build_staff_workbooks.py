@@ -23,6 +23,17 @@ class BuildStaffWorkbooks:
      :param config_obj:                YAML configuration object
 
     """
+    GROUP_STAFF_COL = "A"
+    START_Q2_COL = "B"
+    END_Q2_COL = "D"
+    START_Q3_COL = "E"
+    END_Q3_COL = "G"
+    START_Q4_COL = "H"
+    END_Q4_COL = "J"
+    START_Q1_COL = "K"
+    END_Q1_COL = "M"
+    TOTAL_COL = "N"
+    PER_COL = "O"
 
     def __init__(self, config_obj):
 
@@ -173,31 +184,35 @@ class BuildStaffWorkbooks:
         text_fill = p1 + p2 + p3 + p4 + p5
         ws.merge_range('A11:N11', text_fill, fmt[7])
 
-        ws.write('A12', 'Group Staff', fmt[3])
+        ws.write('{}12'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Group Staff', fmt[3])
         current_fy = int(fy[-2:])
         next_fy = 'FY{0}'.format(current_fy + 1)
 
-        ws.merge_range('B12:D12', 'Quarter 2 - {0}'.format(fy), fmt[8])
-        ws.merge_range('E12:G12', 'Quarter 3 - {0}'.format(fy), fmt[8])
-        ws.merge_range('H12:J12', 'Quarter 4 - {0}'.format(fy), fmt[8])
-        ws.merge_range('K12:M12', 'Quarter 1 - {0}'.format(next_fy), fmt[8])
+        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q2_COL, BuildStaffWorkbooks.END_Q2_COL),
+                       'Quarter 2 - {0}'.format(fy), fmt[8])
+        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q3_COL, BuildStaffWorkbooks.END_Q3_COL),
+                       'Quarter 3 - {0}'.format(fy), fmt[8])
+        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q4_COL, BuildStaffWorkbooks.END_Q4_COL),
+                       'Quarter 4 - {0}'.format(fy), fmt[8])
+        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q1_COL, BuildStaffWorkbooks.END_Q1_COL),
+                       'Quarter 1 - {0}'.format(next_fy), fmt[8])
 
-        ws.write('N12', '', fmt[8])
-        ws.write('O12', '', fmt[8])
+        ws.write('{}12'.format(BuildStaffWorkbooks.TOTAL_COL), '', fmt[8])
+        ws.write('{}12'.format(BuildStaffWorkbooks.PER_COL), '', fmt[8])
 
         mth_list = [''] + ['{}-{}'.format(i, self.target_fy) for i in self.mth_list] + ['Total']
 
-        ws.write_row('A13', mth_list, fmt[6])
-        ws.merge_range('O13:O14', '% of Available Hours Covered', fmt[6])
+        ws.write_row('{}13'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), mth_list, fmt[6])
+        ws.merge_range('{0}13:{0}14'.format(BuildStaffWorkbooks.PER_COL), '% of Available Hours Covered', fmt[6])
 
         total_hours = sum(wkg_hrs_list)
-        ws.write('A14', 'Wkg Hrs Available =', fmt[6])
-        ws.write_row('B14', wkg_hrs_list, fmt[6])
-        ws.write('N14', total_hours, fmt[6])
+        ws.write('{}14'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Wkg Hrs Available =', fmt[6])
+        ws.write_row('{}14'.format(BuildStaffWorkbooks.START_Q2_COL), wkg_hrs_list, fmt[6])
+        ws.write('{}14'.format(BuildStaffWorkbooks.TOTAL_COL), total_hours, fmt[6])
 
         span_list = ['Processing Month ='] + self.mth_span_list + ['', '']
 
-        ws.write_row('A15', span_list, fmt[6])
+        ws.write_row('{}15'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), span_list, fmt[6])
 
     @staticmethod
     def create_staff_row_content(staff_list, wkg_hrs_list):
