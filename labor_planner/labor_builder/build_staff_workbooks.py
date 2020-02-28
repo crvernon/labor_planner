@@ -140,8 +140,8 @@ class BuildStaffWorkbooks:
 
         # set column widths
         ws.set_column('A:A', 22)
-        ws.set_column('B:N', 14)
-        ws.set_column('O:O', 20)
+        ws.set_column('B:S', 18)
+        ws.set_column('T:T', 20)
 
         # write headers
         ws.write('A1', 'Project Labor Planning', fmt[1])
@@ -319,7 +319,7 @@ class BuildStaffWorkbooks:
         """
 
         # start row
-        start_row = 16
+        start_row = 17
 
         # add data to dict where staff do not have hours on the project
         d = self.create_staff_row_content(staff_list, wkg_hrs_list)
