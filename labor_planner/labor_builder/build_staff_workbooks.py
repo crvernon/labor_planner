@@ -292,7 +292,7 @@ class BuildStaffWorkbooks:
         """
 
         # set alpha string to be called by index
-        alpha_str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        alpha_str = 'FGHIJKLMNOPQRSTUVWXYZ'
         ws.write('{0}{1}'.format(BuildStaffWorkbooks.GROUP_STAFF_COL, totals_row), 'Total', f)
 
         # from B to N
