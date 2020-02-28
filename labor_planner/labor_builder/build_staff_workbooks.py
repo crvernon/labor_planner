@@ -23,6 +23,11 @@ class BuildStaffWorkbooks:
      :param config_obj:                YAML configuration object
 
     """
+    MAJOR_CAP_COL = "A"
+    MINOR_CAP_COL = "B"
+    ROLE_COL = "C"
+    GROUP_COL = "D"
+    TEAM_COL = "E"
     GROUP_STAFF_COL = "F"
     START_Q2_COL = "G"
     END_Q2_COL = "I"
@@ -188,7 +193,11 @@ class BuildStaffWorkbooks:
         # This is where the script for formatting/writing the worksheet header (rows 1 through 11) ends.
         # Below this is where formatting/writing the rest of the worksheet begins:
 
-        ws.write('{}13'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Group Staff', fmt[3])
+        ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.MAJOR_CAP_COL, BuildStaffWorkbooks.ROLE_COL),
+                       'Staff Capabilities/Roles'.format(fy), fmt[13])
+        ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.GROUP_COL, BuildStaffWorkbooks.GROUP_STAFF_COL),
+                       'Staff Group/Team/Name'.format(fy), fmt[13])
+
         current_fy = int(fy[-2:])
         next_fy = 'FY{0}'.format(current_fy + 1)
 
