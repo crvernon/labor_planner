@@ -186,35 +186,35 @@ class BuildStaffWorkbooks:
         # This is where the script for formatting/writing the worksheet header (rows 1 through 11) ends.
         # Below this is where formatting/writing the rest of the worksheet begins:
 
-        ws.write('{}12'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Group Staff', fmt[3])
+        ws.write('{}13'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Group Staff', fmt[3])
         current_fy = int(fy[-2:])
         next_fy = 'FY{0}'.format(current_fy + 1)
 
-        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q2_COL, BuildStaffWorkbooks.END_Q2_COL),
+        ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q2_COL, BuildStaffWorkbooks.END_Q2_COL),
                        'Quarter 2 - {0}'.format(fy), fmt[8])
-        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q3_COL, BuildStaffWorkbooks.END_Q3_COL),
+        ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q3_COL, BuildStaffWorkbooks.END_Q3_COL),
                        'Quarter 3 - {0}'.format(fy), fmt[8])
-        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q4_COL, BuildStaffWorkbooks.END_Q4_COL),
+        ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q4_COL, BuildStaffWorkbooks.END_Q4_COL),
                        'Quarter 4 - {0}'.format(fy), fmt[8])
-        ws.merge_range('{}12:{}12'.format(BuildStaffWorkbooks.START_Q1_COL, BuildStaffWorkbooks.END_Q1_COL),
+        ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q1_COL, BuildStaffWorkbooks.END_Q1_COL),
                        'Quarter 1 - {0}'.format(next_fy), fmt[8])
 
-        ws.write('{}12'.format(BuildStaffWorkbooks.TOTAL_COL), '', fmt[8])
-        ws.write('{}12'.format(BuildStaffWorkbooks.PER_COL), '', fmt[8])
+        ws.write('{}13'.format(BuildStaffWorkbooks.TOTAL_COL), '', fmt[8])
+        ws.write('{}13'.format(BuildStaffWorkbooks.PER_COL), '', fmt[8])
 
         mth_list = [''] + ['{}-{}'.format(i, self.target_fy) for i in self.mth_list] + ['Total']
 
-        ws.write_row('{}13'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), mth_list, fmt[6])
-        ws.merge_range('{0}13:{0}14'.format(BuildStaffWorkbooks.PER_COL), '% of Available Hours Covered', fmt[6])
+        ws.write_row('{}14'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), mth_list, fmt[6])
+        ws.merge_range('{0}14:{0}15'.format(BuildStaffWorkbooks.PER_COL), '% of Available Hours Covered', fmt[6])
 
         total_hours = sum(wkg_hrs_list)
-        ws.write('{}14'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Wkg Hrs Available =', fmt[6])
-        ws.write_row('{}14'.format(BuildStaffWorkbooks.START_Q2_COL), wkg_hrs_list, fmt[6])
-        ws.write('{}14'.format(BuildStaffWorkbooks.TOTAL_COL), total_hours, fmt[6])
+        ws.write('{}15'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Wkg Hrs Available =', fmt[6])
+        ws.write_row('{}15'.format(BuildStaffWorkbooks.START_Q2_COL), wkg_hrs_list, fmt[6])
+        ws.write('{}15'.format(BuildStaffWorkbooks.TOTAL_COL), total_hours, fmt[6])
 
         span_list = ['Processing Month ='] + self.mth_span_list + ['', '']
 
-        ws.write_row('{}15'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), span_list, fmt[6])
+        ws.write_row('{}16'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), span_list, fmt[6])
 
     @staticmethod
     def create_staff_row_content(staff_list, wkg_hrs_list):
@@ -274,7 +274,8 @@ class BuildStaffWorkbooks:
             tot_cell = '{0}{1}'.format(BuildStaffWorkbooks.TOTAL_COL, row)
             ws.write_formula(tot_cell, tot_form, f)
 
-            per_form = '{=' + tot_cell + '/ ({}14)'.format(BuildStaffWorkbooks.TOTAL_COL) + '}'
+            # The following two lines write the formulas that calculate the Percent hours covered
+            per_form = '{=' + tot_cell + '/ ({}15)'.format(BuildStaffWorkbooks.TOTAL_COL) + '}'
             ws.write_formula('{0}{1}'.format(BuildStaffWorkbooks.PER_COL, row), per_form, fp)
 
         # return final staff row number + 1
