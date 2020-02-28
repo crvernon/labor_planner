@@ -23,17 +23,17 @@ class BuildStaffWorkbooks:
      :param config_obj:                YAML configuration object
 
     """
-    GROUP_STAFF_COL = "B"
-    START_Q2_COL = "C"
-    END_Q2_COL = "E"
-    START_Q3_COL = "F"
-    END_Q3_COL = "H"
-    START_Q4_COL = "I"
-    END_Q4_COL = "K"
-    START_Q1_COL = "L"
-    END_Q1_COL = "N"
-    TOTAL_COL = "O"
-    PER_COL = "P"
+    GROUP_STAFF_COL = "F"
+    START_Q2_COL = "G"
+    END_Q2_COL = "I"
+    START_Q3_COL = "J"
+    END_Q3_COL = "L"
+    START_Q4_COL = "M"
+    END_Q4_COL = "O"
+    START_Q1_COL = "P"
+    END_Q1_COL = "R"
+    TOTAL_COL = "S"
+    PER_COL = "T"
 
     def __init__(self, config_obj):
 
@@ -182,7 +182,9 @@ class BuildStaffWorkbooks:
         p4 = "proposal (1b), please enter teh probability % of being funded/awarded "
         p5 = "in #6 above."
         text_fill = p1 + p2 + p3 + p4 + p5
-        ws.merge_range('A11:N11', text_fill, fmt[7])
+        ws.merge_range('A11:O11', text_fill, fmt[7])
+        # This is where the script for formatting/writing the worksheet header (rows 1 through 11) ends.
+        # Below this is where formatting/writing the rest of the worksheet begins:
 
         ws.write('{}12'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Group Staff', fmt[3])
         current_fy = int(fy[-2:])
