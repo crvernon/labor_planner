@@ -123,10 +123,12 @@ class BuildStaffWorkbooks:
         bkg_blue = wkbook.add_format({'border': 1, 'bg_color': '#BED1DE'})
         border_1 = wkbook.add_format({'border': 1})
         num_percent_blue = wkbook.add_format({'num_format': '0%', 'border': 1, 'bg_color': '#BED1DE'})
+        border_gray_center_bold = wkbook.add_format({'bold':1, 'border': 1, 'bg_color': '#BDBDBD', 'align': 'center',
+                                                     'text_wrap': 1})
 
         return bold, bold_big, bkg_green, border_bold, border_gray, border_gray_right, \
                border_gray_center, red_text_wrap, bold_center_border, num_percent, \
-               bkg_blue, border_1, num_percent_blue
+               bkg_blue, border_1, num_percent_blue, border_gray_center_bold
 
     def write_static_worksheet_content(self, ws, fmt, fy, wkg_hrs_list):
         """Write static (non-staff row) worksheet content
@@ -191,29 +193,29 @@ class BuildStaffWorkbooks:
         next_fy = 'FY{0}'.format(current_fy + 1)
 
         ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q2_COL, BuildStaffWorkbooks.END_Q2_COL),
-                       'Quarter 2 - {0}'.format(fy), fmt[8])
+                       'Quarter 2 - FY{0}'.format(fy), fmt[13])
         ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q3_COL, BuildStaffWorkbooks.END_Q3_COL),
-                       'Quarter 3 - {0}'.format(fy), fmt[8])
+                       'Quarter 3 - FY{0}'.format(fy), fmt[13])
         ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q4_COL, BuildStaffWorkbooks.END_Q4_COL),
-                       'Quarter 4 - {0}'.format(fy), fmt[8])
+                       'Quarter 4 - FY{0}'.format(fy), fmt[13])
         ws.merge_range('{}13:{}13'.format(BuildStaffWorkbooks.START_Q1_COL, BuildStaffWorkbooks.END_Q1_COL),
-                       'Quarter 1 - {0}'.format(next_fy), fmt[8])
+                       'Quarter 1 - {0}'.format(next_fy), fmt[13])
 
-        ws.write('{}13'.format(BuildStaffWorkbooks.TOTAL_COL), '', fmt[8])
-        ws.write('{}13'.format(BuildStaffWorkbooks.PER_COL), '', fmt[8])
+        ws.write('{}13'.format(BuildStaffWorkbooks.TOTAL_COL), '', fmt[13])
+        ws.write('{}13'.format(BuildStaffWorkbooks.PER_COL), '', fmt[13])
 
         span_list = ['Processing Month ='] + self.mth_span_list + ['Total']
         mth_list = [''] + ['{}-{}'.format(i, self.target_fy) for i in self.mth_list] + ['', '']
 
         ws.write_row('{}14'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), span_list, fmt[6])
-        ws.merge_range('{0}14:{0}15'.format(BuildStaffWorkbooks.PER_COL), '% of Available Hours Covered', fmt[6])
+        ws.merge_range('{0}14:{0}15'.format(BuildStaffWorkbooks.PER_COL), '% of Available Hours Covered', fmt[13])
 
         total_hours = sum(wkg_hrs_list)
         ws.write('{}15'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), 'Wkg Hrs Available =', fmt[6])
         ws.write_row('{}15'.format(BuildStaffWorkbooks.START_Q2_COL), wkg_hrs_list, fmt[6])
         ws.write('{}15'.format(BuildStaffWorkbooks.TOTAL_COL), total_hours, fmt[6])
 
-        ws.write_row('{}16'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), mth_list, fmt[6])
+        ws.write_row('{}16'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), mth_list, fmt[13])
 
     @staticmethod
     def create_staff_row_content(staff_list, wkg_hrs_list):
