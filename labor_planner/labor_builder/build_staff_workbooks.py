@@ -202,9 +202,10 @@ class BuildStaffWorkbooks:
         ws.write('{}13'.format(BuildStaffWorkbooks.TOTAL_COL), '', fmt[8])
         ws.write('{}13'.format(BuildStaffWorkbooks.PER_COL), '', fmt[8])
 
-        mth_list = [''] + ['{}-{}'.format(i, self.target_fy) for i in self.mth_list] + ['Total']
+        span_list = ['Processing Month ='] + self.mth_span_list + ['Total']
+        mth_list = [''] + ['{}-{}'.format(i, self.target_fy) for i in self.mth_list] + ['', '']
 
-        ws.write_row('{}14'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), mth_list, fmt[6])
+        ws.write_row('{}14'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), span_list, fmt[6])
         ws.merge_range('{0}14:{0}15'.format(BuildStaffWorkbooks.PER_COL), '% of Available Hours Covered', fmt[6])
 
         total_hours = sum(wkg_hrs_list)
@@ -212,9 +213,7 @@ class BuildStaffWorkbooks:
         ws.write_row('{}15'.format(BuildStaffWorkbooks.START_Q2_COL), wkg_hrs_list, fmt[6])
         ws.write('{}15'.format(BuildStaffWorkbooks.TOTAL_COL), total_hours, fmt[6])
 
-        span_list = ['Processing Month ='] + self.mth_span_list + ['', '']
-
-        ws.write_row('{}16'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), span_list, fmt[6])
+        ws.write_row('{}16'.format(BuildStaffWorkbooks.GROUP_STAFF_COL), mth_list, fmt[6])
 
     @staticmethod
     def create_staff_row_content(staff_list, wkg_hrs_list):
